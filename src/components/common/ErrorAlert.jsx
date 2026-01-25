@@ -4,7 +4,7 @@ function ErrorAlert(props) {
     }
         return (
             <div className="alert alert-danger" role="alert">
-                <h3>Ошибка! {props.error}</h3>
+                <h3>{props.error}</h3>
             </div>
         )
 }
