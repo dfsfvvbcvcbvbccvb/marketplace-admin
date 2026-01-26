@@ -1,23 +1,48 @@
 import { useState } from "react"
 import ErrorAlert from "../common/ErrorAlert"
 import authService from "../services/auth"
+import { useNavigate } from "react-router-dom"
 
 function LoginPage() {
-
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [emailError, setEmailError] = useState('')
     const [error, setError] = useState('')
+    const navigate = useNavigate()
+
+    function validateForm() {
+        let isValid = true
+
+        if (!email) {
+            setError('Заполните email')
+            isValid = false
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('Некорректный формат email')
+            isValid = false
+        }
+
+        if (!password) {
+            setPasswordError('Заполните пароль')
+            isValid = false
+        }
+
+        return isValid
+    }
 
     async function handleFormSubmit(e) {
         e.preventDefault()
+            setPasswordError('')
+            setEmailError('')
+            setError('')
+            if (!validateForm()) {
+                return
+            }
             try {
                 await authService.login({email, password})
+                navigate('/')
             } catch(e) {
-                setPasswordError(false)
-                setEmailError(false)
                 if (e.status === 422) {
                     if (e.response.data.password) {
                         setPasswordError(true)
