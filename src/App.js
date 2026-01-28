@@ -1,7 +1,9 @@
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import LoginPage from './components/pages/LoginPage'
-import Header from './components/common/Header';
-import { AuthProvider, useAuth } from './components/context/AuthContext'
+import LoginPage from './pages/LoginPage'
+import UsersPage from './pages/UsersPage';
+import Dashboard from './pages/Dashboard';
+import StoresPage from './pages/StoresPage';
+import { AuthProvider, useAuth } from './context/AuthContext'
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth()
@@ -10,7 +12,11 @@ function AppRoutes() {
         <Routes>
             <Route path="/login" element={<LoginPage/>}/>
             {isAuthenticated ? (
-                <Route path="/" element={<Header/>}/>
+            <>
+                <Route path="/users" element={<UsersPage />} />
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/stores" element={<StoresPage />} />
+            </>
             ) : (
                 <Route path="*" element={<Navigate to="/login" />} />
             )}

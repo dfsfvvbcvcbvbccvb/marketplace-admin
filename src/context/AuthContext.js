@@ -13,7 +13,6 @@ export function AuthProvider({ children }) {
     }
 
     const logout = () => {
-        console.log('sdfsdf')
         localStorage.removeItem('token')
         setIsAuthenticated(false)
     }

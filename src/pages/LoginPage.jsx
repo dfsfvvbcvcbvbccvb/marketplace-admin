@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ErrorAlert from "../common/ErrorAlert"
+import ErrorAlert from "../components/common/ErrorAlert"
 import authService from "../services/auth"
 import { useNavigate } from "react-router-dom"
 
@@ -16,10 +16,10 @@ function LoginPage() {
         let isValid = true
 
         if (!email) {
-            setError('Заполните email')
+            setEmailError(true)
             isValid = false
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError('Некорректный формат email')
+            setEmailError(true)
             isValid = false
         }
 

@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router-dom"
-import authService from "../services/auth"
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
+import Sidebar from './Sidebar';
 
 function Header() {
-    const navigate = useNavigate('')
     const { logout } = useAuth();
 
     return (
-        <nav className="navbar navbar-light bg-light">
-        <a className="navbar-brand" href="#">
+        <nav className="navbar navbar-light bg-light border border">
+        <a className="navbar-brand m-1" href="#">
             <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt=""></img>
             MarketPlace Admin
         </a>
