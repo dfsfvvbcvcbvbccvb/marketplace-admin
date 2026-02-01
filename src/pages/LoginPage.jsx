@@ -16,10 +16,10 @@ function LoginPage() {
         let isValid = true
 
         if (!email) {
-            setEmailError(true)
+            setEmailError('Заполните Email')
             isValid = false
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setEmailError(true)
+            setEmailError('Неверно указан Email')
             isValid = false
         }
 
@@ -36,19 +36,19 @@ function LoginPage() {
             setPasswordError('')
             setEmailError('')
             setError('')
-            if (!validateForm()) {
-                return
-            }
+            //if (!validateForm()) {
+            //    return
+            //}
             try {
                 await authService.login({email, password})
                 navigate('/')
             } catch(e) {
                 if (e.status === 422) {
                     if (e.response.data.password) {
-                        setPasswordError(true)
+                        setPasswordError(e.response.data.password)
                     }
                     if (e.response.data.email) {
-                        setEmailError(true)
+                        setEmailError(e.response.data.email)
                     }
                     
                 } else if 
@@ -64,19 +64,27 @@ function LoginPage() {
     return (
         <div className="container">
             <div className="row">
-                <div className="mt-5 col-6 mx-auto w-50 text-center border border-secondary">
+                <div className="mt-5 col-6 mx-auto w-50 border border-secondary">
                     <div>
                         <h5 className="display-5">MarketPlace Admin</h5>
                     </div>
                     <div className="border-top">
                         <h2>Login to Admin Panel</h2>
                         <form onSubmit={handleFormSubmit}>
-                        <div className="input-group mb-2 mr-sm-2">
-                                <input onChange={(e) => setEmail(e.target.value)} type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`} id="inlineFormInputGroupUsername2" placeholder="admin@example.com"></input>
+                        <div className="form-group">
+                                <input onChange={(e) => setEmail(e.target.value)} type="text" className={`form-control  ${emailError ? 'is-invalid' : ''}`}  placeholder="admin@example.com"></input>
                         </div>
-                        <input onChange={(e) => setPassword(e.target.value)} type="password" className={`form-control mb-2 mr-sm-2 ${passwordError ? 'is-invalid' : ''}`} id="inlineFormInputName2" placeholder="Password"></input>
+                        <small id="emailHelp" className="form-text text-danger">{emailError}</small>
+                        <div className="form-group">
+                        <input onChange={(e) => setPassword(e.target.value)} type="password" className={`form-control mr-sm-2 mt-2 ${passwordError ? 'is-invalid' : ''}`} placeholder="Password"></input>
+                        </div>
+                        <small id="emailHelp" className="form-text text-danger">{passwordError}</small>
                         <ErrorAlert error={error}/>
-                        <button type="submit" className="btn btn-primary mb-2 btn-lg">Sign In</button>
+                        <div>
+                            <div className="form-group">
+                        <button type="submit" className="btn btn-primary mb-2 btn-lg mt-2">Sign In</button>
+                            </div>
+                        </div>
                         </form>              
                     </div>
                 </div>

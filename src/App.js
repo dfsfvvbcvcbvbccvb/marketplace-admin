@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage'
 import UsersPage from './pages/UsersPage';
 import Dashboard from './pages/Dashboard';
 import StoresPage from './pages/StoresPage';
+import ProductsPage from './pages/ProductsPage';
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 function AppRoutes() {
@@ -12,14 +13,14 @@ function AppRoutes() {
         <Routes>
             <Route path="/login" element={<LoginPage/>}/>
             {isAuthenticated ? (
-            <>
-                <Route path="/users" element={<UsersPage />} />
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/stores" element={<StoresPage />} />
-            </>
-            ) : (
-                <Route path="*" element={<Navigate to="/login" />} />
-            )}
+                <>
+                    <Route path="/users" element={<UsersPage />} />
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/stores" element={<StoresPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                </>
+            ) : null}
+            {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}
         </Routes>
     )
 }
