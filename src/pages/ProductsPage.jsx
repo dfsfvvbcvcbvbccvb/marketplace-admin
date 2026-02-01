@@ -11,7 +11,6 @@ function ProductsPage() {
     })
     }, []
 )
-console.log(products)
     return (
         <div>
         <Header></Header>

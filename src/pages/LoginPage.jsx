@@ -36,9 +36,9 @@ function LoginPage() {
             setPasswordError('')
             setEmailError('')
             setError('')
-            //if (!validateForm()) {
-            //    return
-            //}
+            if (!validateForm()) {
+                return
+            }
             try {
                 await authService.login({email, password})
                 navigate('/')
@@ -72,13 +72,13 @@ function LoginPage() {
                         <h2>Login to Admin Panel</h2>
                         <form onSubmit={handleFormSubmit}>
                         <div className="form-group">
-                                <input onChange={(e) => setEmail(e.target.value)} type="text" className={`form-control  ${emailError ? 'is-invalid' : ''}`}  placeholder="admin@example.com"></input>
+                                <input onChange={(e) => setEmail(e.target.value)} type="text" className={`form-control ${emailError ? 'is-invalid' : ''}`}  placeholder="admin@example.com"></input>
                         </div>
-                        <small id="emailHelp" className="form-text text-danger">{emailError}</small>
+                        <small className="form-text text-danger">{emailError}</small>
                         <div className="form-group">
                         <input onChange={(e) => setPassword(e.target.value)} type="password" className={`form-control mr-sm-2 mt-2 ${passwordError ? 'is-invalid' : ''}`} placeholder="Password"></input>
                         </div>
-                        <small id="emailHelp" className="form-text text-danger">{passwordError}</small>
+                        <small className="form-text text-danger">{passwordError}</small>
                         <ErrorAlert error={error}/>
                         <div>
                             <div className="form-group">
