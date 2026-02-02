@@ -5,6 +5,8 @@ import Dashboard from './pages/Dashboard';
 import StoresPage from './pages/StoresPage';
 import ProductsPage from './pages/ProductsPage';
 import { AuthProvider, useAuth } from './context/AuthContext'
+import CreateStorePage from './pages/CreateStorePage';
+import CategoriesPage from './pages/CategoriesPage';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth()
@@ -18,6 +20,8 @@ function AppRoutes() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/stores" element={<StoresPage />} />
                     <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/store-add" element={<CreateStorePage />} />
+                    <Route path="/categories" element={<CategoriesPage />} />
                 </>
             ) : null}
             {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}
