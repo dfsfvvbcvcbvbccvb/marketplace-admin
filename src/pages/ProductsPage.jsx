@@ -2,7 +2,7 @@ import Header from "../components/common/Header"
 import { productService } from "../services/products"
 import Sidebar from "../components/common/Sidebar"
 import { useEffect, useState } from "react"
-import { storeService } from "../services/stores"
+import { Link } from 'react-router-dom'
 
 function ProductsPage() {
     const [products, setProducts] = useState([])
@@ -14,16 +14,8 @@ function ProductsPage() {
             .catch((err) => {
                 console.error(err)
             })
-            .finally(() => {
-                
-            })
             
     }, [])
-    let storeName = ''
-    async function getStoreName(id) {
-        storeName = await storeService.getById(id)
-        return storeName
-    }
     return (
         <div>
         <Header></Header>
@@ -33,7 +25,7 @@ function ProductsPage() {
                 <div className="text-center align-center">
                     <h2>Products</h2>
                 </div>
-                <a href="add-product">+ Add New Product</a>
+                <Link to="/product-add">+ Add New Product</Link>
             <table className="table">
                 <thead>
                     <tr>

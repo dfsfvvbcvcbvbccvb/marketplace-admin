@@ -1,27 +1,27 @@
 import api from "./api";
 
 export const userService = {
-  // Получить все продукты
+  // Получить всех пользователей
   getAll: (params = {}) => {
-    return api.post('/users');
+    return api.get('/users');
   },
   
-  // Получить продукт по ID
+  // Получить пользователя по ID
   getById: (id) => {
     return api.get(`/users/${id}`);
   },
   
-  // Создать продукт
+  // Создать пользователя
   create: (productData) => {
     return api.post('/users', productData);
   },
   
-  // Обновить продукт
+  // Обновить пользователя
   update: (id, productData) => {
     return api.put(`/users/${id}`, productData);
   },
   
-  // Удалить продукт
+  // Удалить пользователя
   delete: (id) => {
     return api.delete(`/users/${id}`);
   }

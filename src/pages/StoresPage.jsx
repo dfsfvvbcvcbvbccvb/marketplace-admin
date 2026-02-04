@@ -14,9 +14,6 @@ function StoresPage() {
             .catch((err) => {
                 console.error(err)
             })
-            .finally(() => {
-                
-            })
     }, [])
     return (
         <div>
@@ -33,7 +30,8 @@ function StoresPage() {
                     <tr>
                         <th>ID</th>
                         <th>Название</th>
-                        <th>Цена</th>
+                        <th>Описание</th>
+                        <th>Пользователь</th>
                     </tr>
                 </thead>
                 <tbody>

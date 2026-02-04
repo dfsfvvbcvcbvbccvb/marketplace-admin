@@ -1,10 +1,8 @@
 import Header from "../components/common/Header"
-import React from "react"
 import Sidebar from "../components/common/Sidebar"
 import { storeService } from "../services/stores"
 import { useEffect, useState } from "react"
 import { productService } from "../services/products"
-import { userService } from "../services/users"
 
 function Dashboard() {
 
@@ -28,7 +26,6 @@ function Dashboard() {
             .catch((err) => {
                 console.error(err)
             })
-            .finally(() => {})
     }, [])
 
     return (
