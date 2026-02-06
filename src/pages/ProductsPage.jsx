@@ -16,6 +16,12 @@ function ProductsPage() {
             })
             
     }, [])
+    function handleFormSubmit(e) {
+        const id = e.target.value
+        productService.delete(id)
+        setProducts(products.filter(product => Number(product.id) !== Number(id)));
+        console.log(products, id)
+    }
     return (
         <div>
         <Header></Header>
@@ -25,17 +31,17 @@ function ProductsPage() {
                 <div className="text-center align-center">
                     <h2>Products</h2>
                 </div>
-                <Link to="/product-add">+ Add New Product</Link>
+                <Link to="/products/create">+ Add New Product</Link>
             <table className="table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Название</th>
-                        <th>Цена</th>
+                        <th>Name</th>
+                        <th>Price</th>
                         <th>Qty</th>
-                        <th>Магазин</th>
-                        <th>Активный</th>
-                        <th>Действия</th>
+                        <th>Store</th>
+                        <th>Active</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,9 +51,10 @@ function ProductsPage() {
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td>{product.stockQuantity}</td>
-                            <td>My Store</td>
+                            <td>{product.store.name}</td>
                             <td>{product.isActive ? '✅' : '❌'}</td>
-                            <td><button className="btn btn-primary m-2">Редактировать</button><button className="btn btn-danger">Удалить</button></td>
+                            <td><button className="btn btn-primary m-2">Edit</button><button value={product.id} onClick={handleFormSubmit} className="btn btn-danger">Delete</button></td>
+                           
                         </tr>
                     ))}
                 </tbody>

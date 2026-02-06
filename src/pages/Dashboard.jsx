@@ -18,7 +18,6 @@ function Dashboard() {
             .catch((err) => {
                 console.error(err)
             })
-            .finally(() => {})
         productService.getAll()
             .then((data) => {
                 setProducts(data.data.data)
@@ -38,12 +37,12 @@ function Dashboard() {
                     <h2 className="border">Dashboard</h2>
                     <div className="align-center">
                     <div className="d-flex">
-                        <div style={{width: '300px'}} className="border m-3"><h3>Магазины</h3><span>{stores.length}</span></div>
-                        <div style={{width: '300px'}} className="border m-3"><h3>Товары</h3><span>{products.length}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Stores</h3><span>{stores.length}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Products</h3><span>{products.length}</span></div>
                     </div>
                     <div className="d-flex">
-                        <div style={{width: '300px'}} className="border m-3"><h3>Категории</h3><span>?</span></div>
-                        <div style={{width: '300px'}} className="border m-3"><h3>Пользователи</h3><span>?</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Categories</h3><span>?</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Users</h3><span>?</span></div>
                     </div>
                     </div>
                 </div>

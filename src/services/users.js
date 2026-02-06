@@ -3,7 +3,7 @@ import api from "./api";
 export const userService = {
   // Получить всех пользователей
   getAll: (params = {}) => {
-    return api.get('/users');
+    return api.get('/users', { params });
   },
   
   // Получить пользователя по ID
@@ -12,12 +12,12 @@ export const userService = {
   },
   
   // Создать пользователя
-  create: (productData) => {
+  create: (userData) => {
     return api.post('/users', productData);
   },
   
   // Обновить пользователя
-  update: (id, productData) => {
+  update: (id, userData) => {
     return api.put(`/users/${id}`, productData);
   },
   

@@ -2,6 +2,7 @@ import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
 import { useEffect, useState } from "react"
 import { storeService } from "../services/stores"
+import { Link } from "react-router-dom"
 
 function StoresPage() {
     const [stores, setStores] = useState([])
@@ -23,15 +24,15 @@ function StoresPage() {
             <div className="p-3 border text-center border" style={{minWidth: '73%'}}>
                 <h2 className="border">StoresPage</h2>
                 <div>
-                    <a href="/store-add">+ Add new store</a>
+                    <Link to="/stores/create">+ Add New Store</Link>
                 </div>
                             <table className="table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Название</th>
-                        <th>Описание</th>
-                        <th>Пользователь</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>User</th>
                     </tr>
                 </thead>
                 <tbody>

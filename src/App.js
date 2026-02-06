@@ -21,9 +21,9 @@ function AppRoutes() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/stores" element={<StoresPage />} />
                     <Route path="/products" element={<ProductsPage />} />
-                    <Route path="/store-add" element={<CreateStorePage />} />
+                    <Route path="/stores/create" element={<CreateStorePage />} />
                     <Route path="/categories" element={<CategoriesPage />} />
-                    <Route path="/product-add" element={<CreateProductPage />} />
+                    <Route path="/products/create" element={<CreateProductPage />} />
                 </>
             ) : null}
             {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}
