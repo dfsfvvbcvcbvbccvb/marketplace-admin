@@ -12,13 +12,13 @@ export const storeService = {
   },
   
   // Создать магазин
-  create: (productData) => {
-    return api.post('/stores', productData);
+  create: (storeData) => {
+    return api.post('/stores', storeData);
   },
   
   // Обновить магазин
-  update: (id, productData) => {
-    return api.put(`/stores/${id}`, productData);
+  update: (id, storeData) => {
+    return api.put(`/stores/${id}`, storeData);
   },
   
   // Удалить магазин

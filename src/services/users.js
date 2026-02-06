@@ -13,12 +13,12 @@ export const userService = {
   
   // Создать пользователя
   create: (userData) => {
-    return api.post('/users', productData);
+    return api.post('/users', userData);
   },
   
   // Обновить пользователя
   update: (id, userData) => {
-    return api.put(`/users/${id}`, productData);
+    return api.put(`/users/${id}`, userData);
   },
   
   // Удалить пользователя
