@@ -3,30 +3,72 @@ import Sidebar from "../components/common/Sidebar"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { productService } from "../services/products"
+import ErrorAlert from "../components/common/ErrorAlert"
+import { useNavigate } from "react-router-dom"
+import { categoriesService } from "../services/categories"
+import { useEffect } from "react"
 
 function CreateProductPage() {
 
-    const [productName, setProductName] = useState([])
-    const [productDescription, setProductDescription] = useState([])
-    const [productQuantity, setProductQuantity] = useState([])
-    const [productPrice, setProductPrice] = useState([])
+    const [productName, setProductName] = useState('')
+    const [productDescription, setProductDescription] = useState('')
+    const [productQuantity, setProductQuantity] = useState('')
+    const [productPrice, setProductPrice] = useState('')
     const [productActive, setProductActive] = useState('')
+    const [error, setError] = useState('')
+    const [categories, setCategories] = useState([])
+    const navigate = useNavigate()
 
-    function handleFormSubmit() {
+    useEffect(() => {
+        categoriesService.getAll(2)
+            .then((data) => {
+                setCategories(data.data.data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }, [])  
+    console.log(categories)  
+
+
+    async function handleFormSubmit() {
+        setError('')
+        if (productName === '') {
+            setError('Заполните название продукта')
+            return
+        }
+        if (productPrice === '') {
+            setError('Заполните стоимость продукта')
+            return
+        }
+        if (productQuantity === '') {
+            setError('Заполните quantity продукта')
+            return
+        }
+        if (productDescription === '') {
+            setError('Заполните описание продукта')
+            return
+        }
+        let productSku = 'SKU-' + Math.ceil(Math.random() * 10000)
+
         const productData = {
-            store_id: 1,
+            store_id: 2,
             category_id: 2,
             name: productName,
-            slug: productName + '1',
+            slug: productName + '-' + Math.ceil(Math.random() * 10000),
             description: productDescription,
             price: productPrice,
-            sku: 'SKU-3424',
+            sku: productSku,
             stock_quantity: productQuantity,
             isActive: Boolean(productActive),
-            main_image: 'string',
-            gallery_images: ['string']
                 }
-        productService.create(productData)
+            try {
+                await productService.create(productData)
+                navigate('/products')
+            } catch(e) {
+                setError(e.response.data.message)
+            }
+        
     }
 
     return (
@@ -75,7 +117,8 @@ function CreateProductPage() {
                                 <option value='true'>Active</option>
                                 <option value='false'>No Active</option>
                             </select>
-                            <button onClick={handleFormSubmit} className="btn btn-primary">Create Product</button>
+                            <button onClick={handleFormSubmit} className="btn btn-primary mt-2 mb-2">Create Product</button>
+                            <ErrorAlert error={error}></ErrorAlert>
                         </div>
                     </div>
                 </div>
