@@ -3,7 +3,7 @@ import api from "./api";
 export const categoriesService = {
   // Получить все категории
   getAll: (storeId) => {
-    return api.get(`/categories/${storeId}`);
+    return api.get(`/categories?store_id=${storeId}&per_page=15`);
   },
   
   // Получить категорию по ID
@@ -12,13 +12,13 @@ export const categoriesService = {
   },
   
   // Создать категорию
-  create: (categorieData) => {
-    return api.post('/categories', categorieData);
+  create: (categoryData) => {
+    return api.post('/categories', categoryData);
   },
   
   // Обновить категорию
-  update: (id, categorieData) => {
-    return api.put(`/categories/${id}`, categorieData);
+  update: (id, categoryData) => {
+    return api.put(`/categories/${id}`, categoryData);
   },
   
   // Удалить категорию
