@@ -13,7 +13,7 @@ function CreateProductPage() {
     const [productDescription, setProductDescription] = useState('')
     const [productQuantity, setProductQuantity] = useState('')
     const [productPrice, setProductPrice] = useState('')
-    const [productActive, setProductActive] = useState('')
+    const [productActive, setProductActive] = useState('true')
     const [error, setError] = useState('')
     const [sku, setSku] = useState('')
     const [storeId, setStoreId] = useState('')
@@ -24,17 +24,9 @@ function CreateProductPage() {
     const [imagePreview, setImagePreview] = useState(null)
     const [galleryImages, setGalleryImages] = useState([])
     const [galleryPreviews, setGalleryPreviews] = useState([])
+    const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml']
+    const MAX_FILE_SIZE = 2 * 1024 * 1024
     const navigate = useNavigate()
-
-    useEffect(() => {
-        categoriesService.getAll(2)
-            .then((data) => {
-                setCategories(data.data.data)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-    }, []) 
     
     useEffect(() => {
         storeService.getAll()
@@ -49,6 +41,7 @@ function CreateProductPage() {
             return
         }
 
+
     categoriesService.getAll(storeId)
             .then((data) => {
                 setCategories(Object.values(data.data.data))
@@ -57,20 +50,30 @@ function CreateProductPage() {
         .catch((err) => console.error(err))
     }, [storeId])
 
+    useEffect(() => {
+        return () => {
+            galleryPreviews.forEach((url) => URL.revokeObjectURL(url))
+        }
+    }, [galleryPreviews])    
+
+    function validateImageFile(file) {
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            return `Файл "${file.name}" имеет недопустимый формат`
+        }
+        if (file.size > MAX_FILE_SIZE) {
+            return `Файл "${file.name}" превышает 2MB`
+        }
+        return null
+    }
+
     function handleImageChange(e) {
         const file = e.target.files[0]
 
         if (!file) return
 
-        // Проверка типа файла
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml']
-        if (!allowedTypes.includes(file.type)) {
-            setError('Допустимые форматы: jpeg, png, jpg, gif, svg')
-            return
-        }
-
-        if (file.size > 2 * 1024 * 1024) {
-            setError('Максимальный размер файла — 2MB')
+        const errorMsg = validateImageFile(file)
+        if (errorMsg) {
+            setError(errorMsg)
             return
         }
 
@@ -86,18 +89,16 @@ function CreateProductPage() {
     function handleGalleryChange(e) {
         const files = Array.from(e.target.files)
 
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml']
+        let errorMsg = ''
 
+    
         for (const file of files) {
-            if (!allowedTypes.includes(file.type)) {
-                setError(`Файл "${file.name}" имеет недопустимый формат`)
+            errorMsg = validateImageFile(file)
+            if (errorMsg) {
+                setError(errorMsg)
                 return
             }
-            if (file.size > 2 * 1024 * 1024) {
-                setError(`Файл "${file.name}" превышает 2MB`)
-                return
-            }
-        }
+        }        
 
         setGalleryImages(files)
 
@@ -125,26 +126,24 @@ async function handleFormSubmit(e) {
         setError('Заполните описание продукта')
         return
     }
-    let newSku = 'SKU-' + sku
-
-        function generateSlug(text) {
-            return text
-                .toLowerCase()
-                .trim()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-        }       
+    if (!storeId) {
+        setError('Выберите магазин')
+        return
+    }
+    if (!categoryId) {
+        setError('Выберите категорию')
+        return
+    }
+      
 
     const formData = new FormData()
 
     formData.append('store_id', storeId)
     formData.append('category_id', categoryId)
     formData.append('name', productName)
-    formData.append('slug', generateSlug(productName))
     formData.append('description', productDescription)
     formData.append('price', productPrice)
-    formData.append('sku', newSku)
+    formData.append('sku', sku)
     formData.append('stock_quantity', productQuantity)
     formData.append('is_active', productActive === 'true')
 
@@ -192,7 +191,7 @@ async function handleFormSubmit(e) {
                                     onChange={(e) => setStoreId(e.target.value)}
                                     className="form-select"
                                 >
-                                    <option value="">Выберите магазин</option>
+                                    <option value="">Select store</option>
                                     {stores.map((store) => (
                                         <option key={store.id} value={store.id}>
                                             {store.name}
@@ -208,8 +207,9 @@ async function handleFormSubmit(e) {
                                 value={categoryId}
                                 onChange={(e) => setCategoryId(e.target.value)}
                                 disabled={!storeId}
+                                className="form-select"
                             >
-                            <option value="">Выберите категорию</option>
+                            <option value="">Select category</option>
                             {categories.map((cat) => (
                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
@@ -222,10 +222,10 @@ async function handleFormSubmit(e) {
                                 <input value={productDescription} onChange={(e) => setProductDescription(e.target.value)} type="text" className="form-control mt-2" placeholder="Description"  ></input>
                             </div>
                             <div>
-                                <input value={productPrice} onChange={(e) => setProductPrice(e.target.value)} type="text" className="form-control mt-2" placeholder="Price" ></input>
+                                <input value={productPrice} onChange={(e) => setProductPrice(e.target.value)} type="number" className="form-control mt-2" placeholder="Price" ></input>
                             </div>
                             <div>
-                                <input value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} type="text" className="form-control mt-2" placeholder="Quantity" ></input>
+                                <input value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} type="number" className="form-control mt-2" placeholder="Quantity" ></input>
                             </div>
                             <div>
                                 <input value={sku} onChange={(e) => setSku(e.target.value)} type="text" className="form-control mt-2" placeholder="SKU" ></input>
@@ -235,14 +235,13 @@ async function handleFormSubmit(e) {
                                 <option value='false'>InActive</option>
                             </select>
                             <div>
-                                <label>Основное изображение</label>
+                                <label>Main Image</label>
                                 <input
                                     type="file"
                                     accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
                                     onChange={handleImageChange}
                                     className="form-control"
                                 />
-                                {}
                                 {imagePreview && (
                                     <img
                                         src={imagePreview}
@@ -252,7 +251,7 @@ async function handleFormSubmit(e) {
                                 )}
                             </div>
                             <div>
-                                <label>Галерея изображений</label>
+                                <label>Gallery images</label>
                                 <input
                                     type="file"
                                     multiple
@@ -260,7 +259,6 @@ async function handleFormSubmit(e) {
                                     onChange={handleGalleryChange}
                                     className="form-control"
                                 />
-                                {/* Превью всех выбранных изображений */}
                                 <div style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
                                     {galleryPreviews.map((preview, index) => (
                                         <img
