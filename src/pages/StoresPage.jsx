@@ -11,11 +11,19 @@ function StoresPage() {
         storeService.getAll()
             .then((data) => {
                 setStores(data.data.data)
+                console.log(data.data.data)
             })
             .catch((err) => {
                 console.error(err)
             })
     }, [])
+
+    async function handleDelete(e) {
+        let id = e.target.value
+        await storeService.delete(id)
+        setStores(stores.filter(store => Number(store.id) !== Number(id)));
+    }
+
     return (
         <div>
         <Header></Header>
@@ -33,6 +41,7 @@ function StoresPage() {
                         <th>Name</th>
                         <th>Description</th>
                         <th>User</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +50,9 @@ function StoresPage() {
                             <td>{store.id}</td>
                             <td>{store.name}</td>
                             <td>{store.description}</td>
-                            <td>{store.user}</td>
+                            <td>{store.userId}</td>
+                            <button className="btn btn-primary m-2">Edit</button>
+                            <button value={store.id} onClick={handleDelete} className="btn btn-danger">Delete</button>
                         </tr>
                     ))}
                 </tbody>

@@ -22,7 +22,6 @@ function ProductsPage() {
         const id = e.target.value
         productService.delete(id)
         setProducts(products.filter(product => Number(product.id) !== Number(id)));
-        console.log(products, id)
     }
 
     function handleNavigate(e) {

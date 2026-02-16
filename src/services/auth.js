@@ -10,6 +10,7 @@ export const authService = {
         })
         const { access_token } = response.data
         localStorage.setItem('token', access_token)
+        localStorage.setItem('user_id', response.data.data.id)
         return access_token
     }
 }

@@ -3,7 +3,7 @@ import api from "./api";
 export const categoriesService = {
   // Получить все категории
   getAll: (storeId) => {
-    return api.get(`/categories?store_id=${storeId}&per_page=15`);
+    return api.get(`/categories?store_id=${storeId}`);
   },
   
   // Получить категорию по ID

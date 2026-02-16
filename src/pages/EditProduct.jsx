@@ -8,35 +8,29 @@ import { categoriesService } from "../services/categories"
 
 function EditProduct() {
     const location = useLocation()
-    const [product, setProduct] = useState('')
     const [error, setError ] = useState('')
     const [sku, setSku] = useState('')
     const [productName, setProductName ] = useState('')
     const [productDescription, setProductDescription] = useState('')
     const [productQuantity, setProductQuantity] = useState('')
     const [productPrice, setProductPrice] = useState('')
-    const [productSlug, setProductSlug] = useState('')
     const [productCategoryId, setProductCategoryId] = useState('')
     const [productActive, setProductActive] = useState('true')
     const [productStoreId, setProductStoreId] = useState('')
     const [categories, setCategories] = useState([])
-    const [productCategoryName, setProductCategoryName] = useState('')
     const navigate = useNavigate()
     let id = location.state.id
     useEffect(() => {
         productService.getById(id)
             .then((data) => {
                 let productData = data.data.data
-                setProduct(productData)
                 setSku(productData.sku)
-                setProductSlug(productData.slug)
                 setProductPrice(productData.price)
                 setProductQuantity(productData.stockQuantity)
                 setProductName(productData.name)
                 setProductDescription(productData.description)
                 setProductCategoryId(productData.category.id)
                 setProductStoreId(productData.store.id)
-                setProductCategoryName(productData.category.name)
             })
             .catch((err) => {
                 console.error(err)
@@ -44,16 +38,12 @@ function EditProduct() {
     }, [])
 
     useEffect(() => {
-        console.log(productStoreId)
     categoriesService.getAll(productStoreId)
             .then((data) => {
                 setCategories(Object.values(data.data.data))
-                setProductCategoryId('')
         })
         .catch((err) => console.error(err))
     }, [productStoreId])    
-
-    console.log(product)
 
 
 async function handleFormSubmit(e) {
@@ -90,7 +80,7 @@ async function handleFormSubmit(e) {
     formData.append('price', productPrice)
     formData.append('sku', sku)
     formData.append('stock_quantity', productQuantity)
-    formData.append('is_active', productActive === 'true')
+    formData.append('is_active', productActive === 'true' ? 1 : 0)
 
 
     try {
@@ -150,7 +140,7 @@ async function handleFormSubmit(e) {
                             <div>
                                 <input value={sku} type="text" onChange={(e) => setSku(e.target.value)} className="form-control mt-2" placeholder="SKU" ></input>
                             </div>
-                            <select className="mt-2 form-select">
+                            <select onChange={(e) => setProductActive(e.target.value)} className="mt-2 form-select">
                                 <option value='true'>Active</option>
                                 <option value='false'>InActive</option>
                             </select>
