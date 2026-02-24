@@ -10,6 +10,7 @@ import CategoriesPage from './pages/CategoriesPage';
 import CreateProductPage from './pages/CreateProductPage';
 import EditProduct from './pages/EditProduct';
 import CreateUserPage from './pages/CreateUserPage';
+import Test from './pages/test';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth()
@@ -28,6 +29,7 @@ function AppRoutes() {
                     <Route path="/products/create" element={<CreateProductPage />} />
                     <Route path="/products/edit" element={<EditProduct />} />
                     <Route path="/users/add" element={<CreateUserPage />} />
+                    <Route path="/test" element={<Test />} />
                 </>
             ) : null}
             {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}

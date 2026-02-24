@@ -14,5 +14,3 @@ export const authService = {
         return access_token
     }
 }
-
-export default authService

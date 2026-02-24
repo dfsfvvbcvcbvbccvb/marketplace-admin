@@ -1,7 +1,7 @@
 import { useState } from "react"
 import ErrorAlert from "../components/common/ErrorAlert"
-import authService from "../services/auth"
 import { useNavigate } from "react-router-dom"
+import { authService } from "../services/auth"
 
 function LoginPage() {
 

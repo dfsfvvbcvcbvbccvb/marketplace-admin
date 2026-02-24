@@ -26,6 +26,3 @@ export const storeService = {
     return api.delete(`/stores/${id}`);
   }
 };
-
-
-export default storeService

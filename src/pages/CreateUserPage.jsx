@@ -20,14 +20,15 @@ function CreateUserPage() {
         if (!userEmail) {
             setError('Заполните Email')
             return
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
             setError('Неверно указан Email')
             return
-        } else if(!userName) {
+        }
+        if (!userName) {
             setError('Заполните username')
             return
         }
-
         if (!userPassword) {
             setError('Заполните пароль')
             return

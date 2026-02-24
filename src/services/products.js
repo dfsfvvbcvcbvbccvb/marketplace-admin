@@ -26,3 +26,5 @@ export const productService = {
     return api.delete(`/products/${id}`);
   }
 };
+
+export default productService

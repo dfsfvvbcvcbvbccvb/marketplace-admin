@@ -3,15 +3,16 @@ import Sidebar from "../components/common/Sidebar"
 import { useEffect, useState } from "react"
 import { storeService } from "../services/stores"
 import { Link } from "react-router-dom"
+import ErrorAlert from "../components/common/ErrorAlert"
 
 function StoresPage() {
     const [stores, setStores] = useState([])
+    const [error, setError] = useState('')
 
     useEffect(() => {
         storeService.getAll()
             .then((data) => {
                 setStores(data.data.data)
-                console.log(data.data.data)
             })
             .catch((err) => {
                 console.error(err)
@@ -19,9 +20,14 @@ function StoresPage() {
     }, [])
 
     async function handleDelete(e) {
-        let id = e.target.value
-        await storeService.delete(id)
-        setStores(stores.filter(store => Number(store.id) !== Number(id)));
+        const id = e.target.value
+        try {
+            await storeService.delete(id)
+            setStores(stores.filter(store => Number(store.id) !== Number(id)))
+        } catch (err) {
+            console.error('Ошибка при удалении:', err)
+            setError('Не удалось удалить магазин')
+        }
     }
 
     return (
@@ -51,12 +57,13 @@ function StoresPage() {
                             <td>{store.name}</td>
                             <td>{store.description}</td>
                             <td>{store.userId}</td>
-                            <button className="btn btn-primary m-2">Edit</button>
-                            <button value={store.id} onClick={handleDelete} className="btn btn-danger">Delete</button>
+                            <td><button className="btn btn-primary m-2">Edit</button>
+                            <button value={store.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <ErrorAlert error={error}></ErrorAlert>
             </div>
         </div>
         </div>
