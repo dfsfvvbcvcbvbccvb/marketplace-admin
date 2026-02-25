@@ -3,6 +3,7 @@ import Sidebar from "../components/common/Sidebar"
 import { storeService } from "../services/stores"
 import { useEffect, useState } from "react"
 import { productService } from "../services/products"
+import userService from "../services/users"
 
 function Dashboard() {
 
@@ -25,7 +26,15 @@ function Dashboard() {
             .catch((err) => {
                 console.error(err)
             })
+        userService.getAll()
+            .then((data) => {
+                setUsers(data.data.data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
     }, [])
+
 
     return (
         <div>
@@ -42,7 +51,7 @@ function Dashboard() {
                     </div>
                     <div className="d-flex">
                         <div style={{width: '300px'}} className="border m-3"><h3>Categories</h3><span>?</span></div>
-                        <div style={{width: '300px'}} className="border m-3"><h3>Users</h3><span>?</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Users</h3><span>{users.length}</span></div>
                     </div>
                     </div>
                 </div>
