@@ -10,7 +10,7 @@ function CreateUserPage() {
     const [userName, setUserName] = useState('')
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
-    const [userRole, setUserRole] = useState('')
+    const [userRole, setUserRole] = useState('admin')
     const [error, setError] = useState('')
     const navigate = useNavigate()
 

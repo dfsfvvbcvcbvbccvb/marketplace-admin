@@ -20,7 +20,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const [sku, setSku] = useState(initialData?.sku || '')
     const [storeId, setStoreId] = useState(initialData?.store?.id || '')
     const [stores, setStores] = useState([])
-    const [categoryId, setCategoryId] = useState(initialData?.category_id || '')
+    const [categoryId, setCategoryId] = useState(initialData?.category?.id || '')
     const [categories, setCategories] = useState([])
     const [mainImage, setMainImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(null)
@@ -38,8 +38,9 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                 .catch((err) => console.error(err))
         }, [])
         useEffect(() => {
-            setStoreId(initialData)
-            console.log(initialData)
+            if (initialData?.store?.id) {
+                setStoreId(initialData.store.id)
+            }
         }, [initialData])
 
             useEffect(() => {

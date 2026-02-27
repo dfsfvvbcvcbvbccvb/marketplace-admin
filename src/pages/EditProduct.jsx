@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import productService from "../services/products"
 import { useLocation } from "react-router-dom"
 
-function Test() {
+function EditProduct() {
     const [product, setProduct] = useState('')
     const [loading, setLoading] = useState(false)
     const location = useLocation()
@@ -19,14 +19,13 @@ function Test() {
                 console.error(err)
             })
     }, []) 
-    console.log(product)
     return (
         <>
             {loading ? (
                 <ProductForm
                     initialData={product}
                     onSubmit={(formData) => productService.update(id, formData)}
-                    submitLabel="Create Product"
+                    submitLabel="Edit Product"
                     isEditing={true}
                 />
             ) : (
@@ -36,4 +35,4 @@ function Test() {
     )
 }
 
-export default Test
+export default EditProduct

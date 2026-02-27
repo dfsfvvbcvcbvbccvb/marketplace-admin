@@ -18,6 +18,26 @@ function ProductsPage() {
             })
             
     }, [])
+    
+    function galleryImagesGenerate(product) {
+        let images = []
+        for (let a = 0; a < product.galleryImageUrls.length; a++) {
+            images.push(<td><a class="text-decoration-none" href={product.galleryImageUrls[0]}>{a + 1} Картинка</a></td>)
+        }
+        if (images.length === 0) {
+            return <td>Отсутствует</td>
+        }
+        return images
+    }
+    
+    function mainImageGenerate(product) {
+        if (product.mainImageUrl === '') {
+            return <td>Отсутствует</td>
+        } else {
+            return <td><a class="text-decoration-none" href={product.mainImageUrl}>Картинка</a></td>
+        }
+    }
+
     function handleProductDelete(e) {
         const id = e.target.value
         productService.delete(id)
@@ -45,6 +65,8 @@ function ProductsPage() {
                         <th>Price</th>
                         <th>Qty</th>
                         <th>Store</th>
+                        <th>Main image</th>
+                        <th>Gallery Images</th>
                         <th>Active</th>
                         <th>Actions</th>
                     </tr>
@@ -57,6 +79,8 @@ function ProductsPage() {
                             <td>{product.price}</td>
                             <td>{product.stockQuantity}</td>
                             <td>{product.store.name}</td>
+                            {mainImageGenerate(product)}
+                            {galleryImagesGenerate(product)}
                             <td>{product.isActive ? '✅' : '❌'}</td>
                             <td><button value={product.id} onClick={handleNavigate} className="btn btn-primary m-2">Edit</button>
                             <button value={product.id} onClick={handleProductDelete} className="btn btn-danger">Delete</button></td>

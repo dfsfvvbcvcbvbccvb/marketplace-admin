@@ -20,6 +20,12 @@ function UsersPage() {
             })
     }, [])
 
+    function handleDelete(e) {
+        let id = e.target.value
+        userService.delete(id)
+        setUsers(users.filter(user => Number(user.id) !== Number(id)));
+    }
+
     return (
         <div>
             <Header></Header>
@@ -27,7 +33,7 @@ function UsersPage() {
             <Sidebar></Sidebar>
             <div className="p-3 border text-center" style={{minWidth: '73%'}}>
                 <h2>Users</h2>
-                <Link to='users/add'>+ Add new user</Link>
+                <Link to='/users/add'>+ Add new user</Link>
                 <div>
                 <table className="table">
                 <thead>
@@ -45,7 +51,7 @@ function UsersPage() {
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td><button className="btn btn-primary m-2">Edit</button>
-                            <button value={user.id} className="btn btn-danger">Delete</button></td>
+                            <button value={user.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}
                 </tbody>
