@@ -3,7 +3,7 @@ import api from "./api";
 export const productService = {
   // Получить все продукты
   getAll: (params = {}) => {
-    return api.get('/products', { params });
+    return api.get('/products/', { params }); 
   },
   
   // Получить продукт по ID

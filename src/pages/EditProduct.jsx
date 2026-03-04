@@ -4,10 +4,10 @@ import productService from "../services/products"
 import { useLocation } from "react-router-dom"
 
 function EditProduct() {
-    const [product, setProduct] = useState('')
+    const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(false)
     const location = useLocation()
-    const id = location.state.id
+    const id = location.state?.id
 
     useEffect(() => {
         productService.getById(id)

@@ -26,8 +26,6 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const [imagePreview, setImagePreview] = useState(null)
     const [galleryImages, setGalleryImages] = useState([])
     const [galleryPreviews, setGalleryPreviews] = useState([])
-    const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml']
-    const MAX_FILE_SIZE = 2 * 1024 * 1024
     const location = useLocation()
     let id = location.state?.id
     const navigate = useNavigate()
@@ -115,6 +113,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
         return null
     }
 
+
     async function handleFormSubmit(e) {
         e.preventDefault()
 
@@ -144,6 +143,13 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
             formData.append('sku', sku)
             formData.append('stock_quantity', productQuantity)
             formData.append('is_active', productActive === 'true' ? 1 : 0)
+            if (mainImage) {
+                formData.append('main_image', mainImage)
+            }
+
+            galleryImages.forEach((file) => {
+                formData.append('gallery_images[]', file)
+            })
         }
         try {
             await onSubmit(formData)
@@ -225,6 +231,11 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                             </select>
                             <div>
                                 <label>Main Image</label>
+                                {isEditing && initialData.mainImageUrl && (
+                                    <div>
+                                        <a href={initialData.mainImageUrl}>Картинка</a>
+                                    </div>
+                                )}
                                 <input
                                     type="file"
                                     accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
@@ -241,6 +252,15 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                             </div>
                             <div>
                                 <label>Gallery images</label>
+                                {isEditing && initialData.galleryImageUrls && (
+                                    <div>
+                                    {initialData.galleryImageUrls.map((url, index) => (
+                                        <a key={index} className="text-decoration-none d-block" href={url}>
+                                            {index + 1} Картинка
+                                        </a>
+                                    ))}
+                                    </div>
+                                )}
                                 <input
                                     type="file"
                                     multiple

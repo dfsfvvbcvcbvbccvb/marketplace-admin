@@ -5,10 +5,12 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { userService } from "../services/users"
 import { Link } from "react-router-dom"
+import ErrorAlert from "../components/common/ErrorAlert"
 
 function UsersPage() {
 
     const [users, setUsers] = useState([])
+    const [error, setError] = useState('')
 
     useEffect(() => {
         userService.getAll()
@@ -20,10 +22,15 @@ function UsersPage() {
             })
     }, [])
 
-    function handleDelete(e) {
-        let id = e.target.value
-        userService.delete(id)
-        setUsers(users.filter(user => Number(user.id) !== Number(id)));
+    async function handleDelete(e) {
+        const id = e.target.value
+        try {
+            await userService.delete(id)
+            setUsers(users.filter(user => Number(user.id) !== Number(id)))
+        } catch (err) {
+            console.error(err)
+            setError(err)
+        }
     }
 
     return (
@@ -57,6 +64,7 @@ function UsersPage() {
                 </tbody>
             </table>                    
                 </div>
+                <ErrorAlert error={error}></ErrorAlert>
             </div>
             </div>
         </div>

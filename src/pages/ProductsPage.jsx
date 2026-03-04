@@ -4,44 +4,85 @@ import Sidebar from "../components/common/Sidebar"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Link } from 'react-router-dom'
+import ErrorAlert from "../components/common/ErrorAlert"
+import { useSearchParams } from 'react-router-dom';
 
 function ProductsPage() {
     const navigate = useNavigate()
     const [products, setProducts] = useState([])
+    const [error, setError] = useState('')
+    const perPage = 15
+    const [pagesNumber, setPagesNumber] = useState('')
+     const [searchParams] = useSearchParams();
     useEffect(() => {
-        productService.getAll()
+        const page = searchParams.get('page')
+        const perPage = searchParams.get('per_page')
+        if (page === null && perPage === null) {
+            productService.getAll()
             .then((data) => {
                 setProducts(data.data.data)
+                setPagesNumber(Math.ceil(data?.data?.meta?.total / 15))
             })
             .catch((err) => {
                 console.error(err)
             })
             
-    }, [])
-    
-    function galleryImagesGenerate(product) {
-        let images = []
-        for (let a = 0; a < product.galleryImageUrls.length; a++) {
-            images.push(<td><a class="text-decoration-none" href={product.galleryImageUrls[0]}>{a + 1} Картинка</a></td>)
+        } else {
+        productService.getAll({
+            page,
+            perPage
+        })
+            .then((data) => {
+                setProducts(data.data.data)
+                setPagesNumber(Math.ceil(data.data.meta.total / perPage))
+            })
+            .catch((err) => {
+                console.error(err)
+            })
         }
-        if (images.length === 0) {
+        
+
+    }, [])
+    function galleryImagesGenerate(product) {
+        if (!product.galleryImageUrls?.length) {
             return <td>Отсутствует</td>
         }
-        return images
+        return (
+            <td>
+                {product.galleryImageUrls.map((url, index) => (
+                    <a key={index} className="text-decoration-none d-block" href={url}>
+                        {index + 1} Картинка
+                    </a>
+                ))}
+            </td>
+        )
+    }
+
+    function pagesGenerate() {
+        let pages = []
+        for (let a = 1; a <= pagesNumber; a++) {
+            pages.push(<a key={a} href={`/products?page=${a}&per_page=${perPage}`} className="btn btn-primary">{a}</a>)
+        }
+        return pages
     }
     
     function mainImageGenerate(product) {
-        if (product.mainImageUrl === '') {
+        if (!product.mainImageUrl) {
             return <td>Отсутствует</td>
         } else {
-            return <td><a class="text-decoration-none" href={product.mainImageUrl}>Картинка</a></td>
+            return <td><a className="text-decoration-none" href={product.mainImageUrl}>Картинка</a></td>
         }
     }
 
-    function handleProductDelete(e) {
+    async function handleProductDelete(e) {
         const id = e.target.value
-        productService.delete(id)
-        setProducts(products.filter(product => Number(product.id) !== Number(id)));
+        try {
+            await productService.delete(id)
+            setProducts(products.filter(product => Number(product.id) !== Number(id)))
+        } catch (err) {
+            console.error(err)
+            
+        }
     }
 
     function handleNavigate(e) {
@@ -89,7 +130,12 @@ function ProductsPage() {
                     ))}
                 </tbody>
             </table>
+            <ErrorAlert error={error}></ErrorAlert>
+            <div>
+                {pagesGenerate()}
             </div>
+            </div>
+            
         </div>
         </div>
 
