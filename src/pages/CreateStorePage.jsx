@@ -30,7 +30,7 @@ function CreateStorePage() {
         if (e.response?.data?.message) {
             setError(e.response.data.message)
         } else {
-            setError('Произошла ошибка при создании продукта')
+            setError('Произошла ошибка при создании магазина')
         }
     }
     }

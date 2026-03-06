@@ -231,11 +231,15 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                             </select>
                             <div>
                                 <label>Main Image</label>
-                                {isEditing && initialData.mainImageUrl && (
-                                    <div>
-                                        <a href={initialData.mainImageUrl}>Картинка</a>
-                                    </div>
-                                )}
+                                <div>
+                                        <a key={initialData.mainImageUrl} href={initialData.mainImageUrl} target="_blank" rel="noreferrer">
+                                            <img
+                                                src={initialData.mainImageUrl}
+                                                alt={`Картинка`}
+                                                style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '4px' }}
+                                            />
+                                        </a>
+                                        </div>
                                 <input
                                     type="file"
                                     accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml"
@@ -255,8 +259,12 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                                 {isEditing && initialData.galleryImageUrls && (
                                     <div>
                                     {initialData.galleryImageUrls.map((url, index) => (
-                                        <a key={index} className="text-decoration-none d-block" href={url}>
-                                            {index + 1} Картинка
+                                        <a key={url} href={url} target="_blank" rel="noreferrer">
+                                            <img
+                                                src={url}
+                                                alt={`Фото ${index + 1}`}
+                                                style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '4px' }}
+                                            />
                                         </a>
                                     ))}
                                     </div>

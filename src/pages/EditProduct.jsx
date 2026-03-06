@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom"
 
 function EditProduct() {
     const [product, setProduct] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
     const id = location.state?.id
 
@@ -13,7 +13,7 @@ function EditProduct() {
         productService.getById(id)
             .then((data) => {
                 setProduct(data.data.data)
-                setLoading(true)
+                setIsLoaded(true)
             })
             .catch((err) => {
                 console.error(err)
@@ -21,7 +21,7 @@ function EditProduct() {
     }, []) 
     return (
         <>
-            {loading ? (
+            {isLoaded ? (
                 <ProductForm
                     initialData={product}
                     onSubmit={(formData) => productService.update(id, formData)}
@@ -29,7 +29,7 @@ function EditProduct() {
                     isEditing={true}
                 />
             ) : (
-                <p>loading</p>
+                <p>Загрузка</p>
             )}
         </>
     )

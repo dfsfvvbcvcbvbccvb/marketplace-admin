@@ -20,6 +20,7 @@ function StoresPage() {
     }, [])
 
     async function handleDelete(e) {
+        if (!window.confirm('Вы уверены, что хотите удалить?')) return
         const id = e.target.value
         try {
             await storeService.delete(id)

@@ -23,13 +23,14 @@ function UsersPage() {
     }, [])
 
     async function handleDelete(e) {
+        if (!window.confirm('Вы уверены, что хотите удалить?')) return
         const id = e.target.value
         try {
             await userService.delete(id)
             setUsers(users.filter(user => Number(user.id) !== Number(id)))
         } catch (err) {
             console.error(err)
-            setError(err)
+            setError('Не удалось удалить пользователя')
         }
     }
 

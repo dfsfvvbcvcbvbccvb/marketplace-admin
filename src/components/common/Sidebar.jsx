@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 
 function Sidebar() {
     const location = useLocation();
@@ -9,29 +10,29 @@ function Sidebar() {
         <div className="d-flex flex-column flex-shrink-0 bg-light mt-2 p-3 border" style={{width: '380px', minHeight: '100vh'}}>
             <ul className="nav nav-pills flex-column mb-auto">
             <li className="nav-item">
-                <a href="/" className={`nav-link ${isActive('/') ? 'active' : 'link-dark'}`}>
+                <NavLink to="/" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link link-dark'}>
                 Dashboard
-                </a>
+                </NavLink>
             </li>
             <li>
-                <a href="/stores" className={`nav-link ${isActive('/stores') ? 'active' : 'link-dark'}`}>
-                Stores
-                </a>
+            <NavLink to="/stores" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link link-dark'}>
+            Stores
+            </NavLink>
             </li>
             <li>
-                <a href="/products" className={`nav-link ${isActive('/products') ? 'active' : 'link-dark'}`}>
+                <NavLink to="/products" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link link-dark'}>
                 Products
-                </a>
+                </NavLink>
             </li>
             <li>
-                <a href="/categories" className={`nav-link ${isActive('/categories') ? 'active' : 'link-dark'}`}>
+                <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link link-dark'}>
                 Categories
-                </a>
+                </NavLink>
             </li>
             <li>
-                <a href="/users" className={`nav-link ${isActive('/users') ? 'active' : 'link-dark'}`}>
+                <NavLink to="/users" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link link-dark'}>
                 Users
-                </a>
+                </NavLink>
             </li>
             </ul>
         </div>

@@ -11,9 +11,10 @@ function ProductsPage() {
     const navigate = useNavigate()
     const [products, setProducts] = useState([])
     const [error, setError] = useState('')
-    const perPage = 15
+    const DEFAULT_PER_PAGE = 15
     const [pagesNumber, setPagesNumber] = useState('')
      const [searchParams] = useSearchParams();
+     const current = searchParams.get('page')
     useEffect(() => {
         const page = searchParams.get('page')
         const perPage = searchParams.get('per_page')
@@ -21,7 +22,7 @@ function ProductsPage() {
             productService.getAll()
             .then((data) => {
                 setProducts(data.data.data)
-                setPagesNumber(Math.ceil(data?.data?.meta?.total / 15))
+                setPagesNumber(Math.ceil(data?.data?.meta?.total / DEFAULT_PER_PAGE))
             })
             .catch((err) => {
                 console.error(err)
@@ -42,7 +43,7 @@ function ProductsPage() {
         }
         
 
-    }, [])
+    }, [searchParams])
     function galleryImagesGenerate(product) {
         if (!product.galleryImageUrls?.length) {
             return <td>Отсутствует</td>
@@ -59,11 +60,22 @@ function ProductsPage() {
     }
 
     function pagesGenerate() {
-        let pages = []
-        for (let a = 1; a <= pagesNumber; a++) {
-            pages.push(<a key={a} href={`/products?page=${a}&per_page=${perPage}`} className="btn btn-primary">{a}</a>)
+        const total = pagesNumber
+        const delta = 2
+        const currentPage = Number(current) || 1
+        const range = []
+
+        for (let i = Math.max(2, currentPage - delta); i <= Math.min(total - 1, currentPage + delta); i++) {
+            range.push(i)
         }
-        return pages
+
+        if (range[0] > 2) range.unshift('...')
+        if (range[range.length - 1] < total - 1) range.push('...')
+
+        range.unshift(1)
+        if (total > 1) range.push(total)
+
+        return range
     }
     
     function mainImageGenerate(product) {
@@ -75,6 +87,7 @@ function ProductsPage() {
     }
 
     async function handleProductDelete(e) {
+        if (!window.confirm('Вы уверены, что хотите удалить?')) return
         const id = e.target.value
         try {
             await productService.delete(id)
@@ -132,7 +145,17 @@ function ProductsPage() {
             </table>
             <ErrorAlert error={error}></ErrorAlert>
             <div>
-                {pagesGenerate()}
+                {pagesGenerate(current, pagesNumber).map((page, i) =>
+    page === '...'
+        ? <span key={`dots-${i}`} className="px-2">...</span>
+        : <Link
+            key={page}
+            to={`/products?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
+            className={`btn ${page === current ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+          >
+            {page}
+          </Link>
+)}
             </div>
             </div>
             

@@ -2,6 +2,7 @@ import { useState } from "react"
 import ErrorAlert from "../components/common/ErrorAlert"
 import { useNavigate } from "react-router-dom"
 import { authService } from "../services/auth"
+import { useAuth } from "../context/AuthContext"
 
 function LoginPage() {
 
@@ -9,6 +10,7 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [emailError, setEmailError] = useState('')
+    const { login } = useAuth()
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
@@ -41,6 +43,8 @@ function LoginPage() {
             }
             try {
                 await authService.login({email, password})
+                const token = await authService.login({email, password})
+                login(token)
                 navigate('/')
             } catch(e) {
                 if (e.status === 422) {

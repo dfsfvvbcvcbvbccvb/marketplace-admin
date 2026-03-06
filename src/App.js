@@ -28,6 +28,7 @@ function AppRoutes() {
                     <Route path="/products/create" element={<CreateProductPage />} />
                     <Route path="/products/edit" element={<EditProduct />} />
                     <Route path="/users/add" element={<CreateUserPage />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </>
             ) : null}
             {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}

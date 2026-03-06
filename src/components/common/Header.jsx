@@ -10,7 +10,7 @@ function Header() {
             MarketPlace Admin
         </a>
         <h3>User: Admin</h3>
-        <button onClick={logout} type="submit" className="btn btn-primary m-2 btn-lg">Logout</button>
+        <button onClick={logout} type="button" className="btn btn-primary m-2 btn-lg">Logout</button>
         </nav>
     )
 }
