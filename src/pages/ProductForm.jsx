@@ -118,9 +118,9 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
         e.preventDefault()
 
         const formData = new FormData()
-
-        if (isEditing === false) {
-            formData.append('store_id', storeId)
+            if (!isEditing) {
+                formData.append('store_id', storeId)
+            }
             formData.append('category_id', categoryId)
             formData.append('name', productName)
             formData.append('description', productDescription)
@@ -135,22 +135,6 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
             galleryImages.forEach((file) => {
                 formData.append('gallery_images[]', file)
             })
-        } else if (isEditing === true) {
-            formData.append('category_id', categoryId)
-            formData.append('name', productName)
-            formData.append('description', productDescription)
-            formData.append('price', productPrice)
-            formData.append('sku', sku)
-            formData.append('stock_quantity', productQuantity)
-            formData.append('is_active', productActive === 'true' ? 1 : 0)
-            if (mainImage) {
-                formData.append('main_image', mainImage)
-            }
-
-            galleryImages.forEach((file) => {
-                formData.append('gallery_images[]', file)
-            })
-        }
         try {
             await onSubmit(formData)
             navigate('/products')

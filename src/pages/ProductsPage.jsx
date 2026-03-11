@@ -30,8 +30,8 @@ function ProductsPage() {
             
         } else {
         productService.getAll({
-            page,
-            perPage
+            page: page,
+            per_page: perPage
         })
             .then((data) => {
                 setProducts(data.data.data)
@@ -51,8 +51,8 @@ function ProductsPage() {
         return (
             <td>
                 {product.galleryImageUrls.map((url, index) => (
-                    <a key={index} className="text-decoration-none d-block" href={url}>
-                        {index + 1} Картинка
+                    <a href={url} target="_blank" rel="noreferrer">
+                    <img src={url} alt="Фото" style={{ width: 50, height: 50, objectFit: 'cover' }} />
                     </a>
                 ))}
             </td>
@@ -79,10 +79,13 @@ function ProductsPage() {
     }
     
     function mainImageGenerate(product) {
+        let url = product.mainImageUrl
         if (!product.mainImageUrl) {
             return <td>Отсутствует</td>
         } else {
-            return <td><a className="text-decoration-none" href={product.mainImageUrl}>Картинка</a></td>
+            return <a href={url} target="_blank" rel="noreferrer">
+                    <img src={url} alt="Фото" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+                    </a>
         }
     }
 

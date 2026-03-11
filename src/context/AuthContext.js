@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import api from '../services/api'
 
 const AuthContext = createContext(null)
 
@@ -12,9 +13,13 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true)
     }
 
-    const logout = () => {
+    const logout = async () => {
+    try {
+        await api.post('/logout')
+    } finally {
         localStorage.removeItem('token')
         setIsAuthenticated(false)
+    }
     }
 
     return (

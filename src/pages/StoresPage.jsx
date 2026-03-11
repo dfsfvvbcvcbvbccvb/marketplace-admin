@@ -4,10 +4,12 @@ import { useEffect, useState } from "react"
 import { storeService } from "../services/stores"
 import { Link } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
+import { useNavigate } from "react-router-dom"
 
 function StoresPage() {
     const [stores, setStores] = useState([])
     const [error, setError] = useState('')
+    const navigate = useNavigate()
 
     useEffect(() => {
         storeService.getAll()
@@ -29,6 +31,10 @@ function StoresPage() {
             console.error('Ошибка при удалении:', err)
             setError('Не удалось удалить магазин')
         }
+    }
+
+    function handleNavigate(e) {
+        navigate('/stores/edit', { state: { id: e.target.value } });
     }
 
     return (
@@ -58,7 +64,7 @@ function StoresPage() {
                             <td>{store.name}</td>
                             <td>{store.description}</td>
                             <td>{store.userId}</td>
-                            <td><button className="btn btn-primary m-2">Edit</button>
+                            <td><button onClick={handleNavigate} value={store.id} className="btn btn-primary m-2">Edit</button>
                             <button value={store.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}

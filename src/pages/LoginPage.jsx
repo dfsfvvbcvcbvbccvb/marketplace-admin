@@ -42,7 +42,6 @@ function LoginPage() {
                 return
             }
             try {
-                await authService.login({email, password})
                 const token = await authService.login({email, password})
                 login(token)
                 navigate('/')
