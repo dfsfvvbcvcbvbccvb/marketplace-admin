@@ -2,8 +2,16 @@ import api from "./api";
 
 export const userService = {
   // Получить всех пользователей
-  getAll: (params = {}) => {
-    return api.get('/users', { params });
+  getAll: (params) => {
+    if (params?.storeId) {
+      return api.get(`/users?store_id=${params?.storeId}`);
+    } 
+    if (params?.page && params?.per_page) {
+      return api.get(`/users?page=${params.page}&per_page=${params.per_page}`);
+    } else {
+      return api.get(`/users`);
+    }
+    
   },
   
   // Получить пользователя по ID

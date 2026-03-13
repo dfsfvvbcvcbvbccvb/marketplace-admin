@@ -74,8 +74,8 @@ function ProductsPage() {
 
         range.unshift(1)
         if (total > 1) range.push(total)
-
         return range
+        
     }
     
     function mainImageGenerate(product) {
@@ -109,11 +109,13 @@ function ProductsPage() {
         <Header></Header>
         <div className="d-flex">
             <Sidebar></Sidebar>
-            <div className="border" style={{minWidth: '73%'}}>
+            <div className="border mt-2" style={{minWidth: '73%'}}>
                 <div className="text-center align-center">
                     <h2>Products</h2>
                 </div>
+                <div className="m-2">
                 <Link to="/products/create">+ Add New Product</Link>
+                </div>
             <table className="table">
                 <thead>
                     <tr>
@@ -147,14 +149,14 @@ function ProductsPage() {
                 </tbody>
             </table>
             <ErrorAlert error={error}></ErrorAlert>
-            <div>
+            <div className="m-2">
                 {pagesGenerate(current, pagesNumber).map((page, i) =>
     page === '...'
         ? <span key={`dots-${i}`} className="px-2">...</span>
         : <Link
             key={page}
             to={`/products?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
-            className={`btn ${page === current ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+            className={`btn ${Number(page) === Number(current) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
           >
             {page}
           </Link>

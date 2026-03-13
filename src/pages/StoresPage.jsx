@@ -5,21 +5,65 @@ import { storeService } from "../services/stores"
 import { Link } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
 import { useNavigate } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 
 function StoresPage() {
     const [stores, setStores] = useState([])
     const [error, setError] = useState('')
+    const DEFAULT_PER_PAGE = 15
+    const [pagesNumber, setPagesNumber] = useState('')
+     const [searchParams] = useSearchParams();
+     const current = searchParams.get('page')
     const navigate = useNavigate()
 
-    useEffect(() => {
-        storeService.getAll()
-            .then((data) => {
-                setStores(data.data.data)
+        useEffect(() => {
+            const page = searchParams.get('page')
+            const perPage = searchParams.get('per_page')
+            if (page === null && perPage === null) {
+                storeService.getAll()
+                .then((data) => {
+                    setStores(data.data.data)
+                    setPagesNumber(Math.ceil(data?.data?.meta?.total / DEFAULT_PER_PAGE))
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+                
+            } else {
+            storeService.getAll({
+                page: page,
+                per_page: perPage
             })
-            .catch((err) => {
-                console.error(err)
-            })
-    }, [])
+                .then((data) => {
+                    setStores(data.data.data)
+                    setPagesNumber(Math.ceil(data.data.meta.total / perPage))
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+            }
+            
+    
+        }, [searchParams])
+
+    function pagesGenerate() {
+        const total = pagesNumber
+        const delta = 2
+        const currentPage = Number(current) || 1
+        const range = []
+
+        for (let i = Math.max(2, currentPage - delta); i <= Math.min(total - 1, currentPage + delta); i++) {
+            range.push(i)
+        }
+
+        if (range[0] > 2) range.unshift('...')
+        if (range[range.length - 1] < total - 1) range.push('...')
+
+        range.unshift(1)
+        if (total > 1) range.push(total)
+        return range
+        
+    }
 
     async function handleDelete(e) {
         if (!window.confirm('Вы уверены, что хотите удалить?')) return
@@ -42,8 +86,8 @@ function StoresPage() {
         <Header></Header>
         <div className="d-flex">
             <Sidebar></Sidebar>
-            <div className="p-3 border text-center border" style={{minWidth: '73%'}}>
-                <h2 className="border">StoresPage</h2>
+            <div className="p-3 border border mt-2" style={{minWidth: '73%'}}>
+                <h2 className="text-center">StoresPage</h2>
                 <div>
                     <Link to="/stores/create">+ Add New Store</Link>
                 </div>
@@ -71,6 +115,19 @@ function StoresPage() {
                 </tbody>
             </table>
             <ErrorAlert error={error}></ErrorAlert>
+                        <div className="m-2">
+                {pagesGenerate(current, pagesNumber).map((page, i) =>
+    page === '...'
+        ? <span key={`dots-${i}`} className="px-2">...</span>
+        : <Link
+            key={page}
+            to={`/stores?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
+            className={`btn ${Number(page) === Number(current) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+          >
+            {page}
+          </Link>
+)}
+            </div>
             </div>
         </div>
         </div>

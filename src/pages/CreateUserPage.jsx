@@ -60,7 +60,7 @@ function CreateUserPage() {
         <Header></Header>
         <div className="d-flex">
             <Sidebar></Sidebar>
-            <div className="border" style={{minWidth: '73%'}}>
+            <div className="border mt-2" style={{minWidth: '73%'}}>
             <div className="text-center border">
                 <h2 className="p-2">Create New User</h2>
             </div>

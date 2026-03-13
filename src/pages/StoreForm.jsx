@@ -55,7 +55,7 @@ function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
         <Header></Header>
         <div className="d-flex">
             <Sidebar></Sidebar>
-            <div className="border" style={{minWidth: '73%'}}>
+            <div className="border mt-2" style={{minWidth: '73%'}}>
             <div className="text-center border">
                 {!isEditing && (
                     <h2>Create New Store</h2>

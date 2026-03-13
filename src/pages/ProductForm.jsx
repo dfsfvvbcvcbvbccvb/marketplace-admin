@@ -20,7 +20,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const [sku, setSku] = useState(initialData?.sku || '')
     const [storeId, setStoreId] = useState(initialData?.store?.id || '')
     const [stores, setStores] = useState([])
-    const [categoryId, setCategoryId] = useState(initialData?.category?.id || '')
+    const [categoryId, setCategoryId] = useState(initialData.category.id)
     const [categories, setCategories] = useState([])
     const [mainImage, setMainImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(null)
@@ -52,7 +52,9 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
             categoriesService.getAll(storeId)
                     .then((data) => {
                         setCategories(Object.values(data.data.data))
-                        setCategoryId('')
+                        if (!isEditing) {
+                            setCategoryId('')
+                        }
                 })
                 .catch((err) => console.error(err))
             }, [storeId])
@@ -62,6 +64,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                     galleryPreviews.forEach((url) => URL.revokeObjectURL(url))
                 }
             }, [galleryPreviews])  
+
 
         function handleImageChange(e) {
         const file = e.target.files[0]
@@ -82,6 +85,19 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
         }
         reader.readAsDataURL(file)
     }
+
+function renderCategoryOptions(categories, depth = 0) {
+    return categories.flatMap(cat => [
+        <option 
+            key={cat.id} 
+            value={cat.id} 
+            selected={Number(cat.id) === Number(initialData.category.id)}
+        >
+            {'—'.repeat(depth)} {cat.name}
+        </option>,
+        ...(cat.children?.length ? renderCategoryOptions(cat.children, depth + 1) : [])
+    ])
+}
 
     function handleGalleryChange(e) {
         const files = Array.from(e.target.files)
@@ -116,7 +132,11 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
 
     async function handleFormSubmit(e) {
         e.preventDefault()
-
+         console.log(categoryId)
+        if (categoryId === '') {
+            setError('Выберите категорию')
+            return
+        }
         const formData = new FormData()
             if (!isEditing) {
                 formData.append('store_id', storeId)
@@ -150,7 +170,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
         <Header></Header>
         <div className="d-flex">
             <Sidebar></Sidebar>
-            <div className="p-3 border" style={{minWidth: '73%'}}>
+            <div className="p-3 border mt-2" style={{minWidth: '73%'}}>
                 <div className="border">
                     <div className="text-center">
                     <h2 className="border">{submitLabel}</h2>
@@ -182,17 +202,19 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                                 <div>
                             <span>Category</span>
                             </div>
-                            <select
-                                value={categoryId}
-                                onChange={(e) => setCategoryId(e.target.value)}
-                                disabled={!storeId}
-                                className="form-select"
-                            >
-                            <option value="">Select category</option>
-                            {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>{cat.name}</option>
-                            ))}
+                            
+                            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="form-select">
+                                {isEditing && (
+                                <option value={initialData.category.id}>{initialData.category.name}</option>
+                                )}
+                                {!isEditing && (
+                                <option value="">Выберите категорию</option>
+                                )}
+                                {renderCategoryOptions(categories)}
                             </select>
+                            
+
+                            
                             </div>
                             <div>
                                 <input value={productName} onChange={(e) => setProductName(e.target.value)} type="text" className="form-control mt-2" placeholder="Product Name" ></input>
@@ -211,18 +233,20 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                             </div>
                             <select onChange={(e) => setProductActive(e.target.value)} className="mt-2 form-select">
                                 <option value='true'>Active</option>
-                                <option value='false'>InActive</option>
+                                <option value='false'>Inactive</option>
                             </select>
                             <div>
                                 <label>Main Image</label>
                                 <div>
-                                        <a key={initialData.mainImageUrl} href={initialData.mainImageUrl} target="_blank" rel="noreferrer">
+                                    {isEditing && (
+                                        <a key={initialData?.mainImageUrl} href={initialData?.mainImageUrl} target="_blank" rel="noreferrer">
                                             <img
-                                                src={initialData.mainImageUrl}
+                                                src={initialData?.mainImageUrl}
                                                 alt={`Картинка`}
                                                 style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '4px' }}
                                             />
                                         </a>
+                                    )}
                                         </div>
                                 <input
                                     type="file"
