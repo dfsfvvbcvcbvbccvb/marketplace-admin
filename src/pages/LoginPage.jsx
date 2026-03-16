@@ -16,7 +16,6 @@ function LoginPage() {
 
     function validateForm() {
         let isValid = true
-
         if (!email) {
             setEmailError('Заполните Email')
             isValid = false

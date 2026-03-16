@@ -34,5 +34,3 @@ export const userService = {
     return api.delete(`/users/${id}`);
   }
 };
-
-export default userService

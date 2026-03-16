@@ -51,7 +51,7 @@ function ProductsPage() {
         return (
             <td>
                 {product.galleryImageUrls.map((url, index) => (
-                    <a href={url} target="_blank" rel="noreferrer">
+                    <a href={url} key={url} target="_blank" rel="noreferrer">
                     <img src={url} alt="Фото" style={{ width: 50, height: 50, objectFit: 'cover' }} />
                     </a>
                 ))}
@@ -79,13 +79,17 @@ function ProductsPage() {
     }
     
     function mainImageGenerate(product) {
-        let url = product.mainImageUrl
+        const url = product.mainImageUrl
         if (!product.mainImageUrl) {
             return <td>Отсутствует</td>
         } else {
-            return <a href={url} target="_blank" rel="noreferrer">
+        return (
+            <td>
+                <a href={url} target="_blank" rel="noreferrer">
                     <img src={url} alt="Фото" style={{ width: 50, height: 50, objectFit: 'cover' }} />
-                    </a>
+                </a>
+            </td>
+        )
         }
     }
 
@@ -106,9 +110,9 @@ function ProductsPage() {
     }
     return (
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="border mt-2" style={{minWidth: '73%'}}>
                 <div className="text-center align-center">
                     <h2>Products</h2>

@@ -20,7 +20,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const [sku, setSku] = useState(initialData?.sku || '')
     const [storeId, setStoreId] = useState(initialData?.store?.id || '')
     const [stores, setStores] = useState([])
-    const [categoryId, setCategoryId] = useState(initialData.category.id)
+    const [categoryId, setCategoryId] = useState(initialData?.category?.id)
     const [categories, setCategories] = useState([])
     const [mainImage, setMainImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(null)
@@ -37,10 +37,9 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
         }, [])
         useEffect(() => {
             if (initialData?.store?.id) {
-                setStoreId(initialData.store.id)
+                setStoreId(initialData?.store.id)
             }
         }, [initialData])
-
             useEffect(() => {
                 if (!storeId) {
                     setCategories([])
@@ -64,7 +63,6 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                     galleryPreviews.forEach((url) => URL.revokeObjectURL(url))
                 }
             }, [galleryPreviews])  
-
 
         function handleImageChange(e) {
         const file = e.target.files[0]
@@ -91,7 +89,7 @@ function renderCategoryOptions(categories, depth = 0) {
         <option 
             key={cat.id} 
             value={cat.id} 
-            selected={Number(cat.id) === Number(initialData.category.id)}
+            selected={Number(cat.id) === Number(initialData?.category?.id)}
         >
             {'—'.repeat(depth)} {cat.name}
         </option>,
@@ -167,9 +165,9 @@ function renderCategoryOptions(categories, depth = 0) {
         return (
         <form onSubmit={handleFormSubmit}>
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="p-3 border mt-2" style={{minWidth: '73%'}}>
                 <div className="border">
                     <div className="text-center">

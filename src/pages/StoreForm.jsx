@@ -8,7 +8,7 @@ import { storeService } from "../services/stores"
 
 function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const navigate = useNavigate()
-    const [error, setError] = useState()
+    const [error, setError] = useState('')
     const [storeName, setStoreName] = useState(initialData?.name)
     const [storeDescription, setStoreDescription] = useState(initialData?.description)
 
@@ -52,9 +52,9 @@ function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
         return (
              <form onSubmit={handleFormSubmit}>
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="border mt-2" style={{minWidth: '73%'}}>
             <div className="text-center border">
                 {!isEditing && (
@@ -68,10 +68,10 @@ function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
             <div className="align-center border ">
                 <h2 className="border-bottom">Information</h2>
                 <div>
-                <input value={storeName} onChange={(e) => {setStoreName(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Store Name"></input>
+                <input value={storeName} onChange={(e) => {setStoreName(e.target.value)}} className={`form-control mr-sm-2 mt-2`} placeholder="Store Name"></input>
                 </div>
                 <div>
-                <input value={storeDescription} onChange={(e) => {setStoreDescription(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Description"></input>
+                <input value={storeDescription} onChange={(e) => {setStoreDescription(e.target.value)}} className={`form-control mr-sm-2 mt-2`} placeholder="Description"></input>
                 </div>
                 <div>
                 <button type="submit" className="btn btn-primary mb-2 btn-lg mt-2">{submitLabel}</button>

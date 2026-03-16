@@ -3,7 +3,7 @@ import Sidebar from "../components/common/Sidebar"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
-import userService from "../services/users"
+import { userService } from "../services/users"
 
 function CreateUserPage() {
 
@@ -57,9 +57,9 @@ function CreateUserPage() {
     return (
         <form onSubmit={handleFormSubmit}>
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="border mt-2" style={{minWidth: '73%'}}>
             <div className="text-center border">
                 <h2 className="p-2">Create New User</h2>

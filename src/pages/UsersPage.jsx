@@ -1,4 +1,3 @@
-import React from "react"
 import Sidebar from "../components/common/Sidebar"
 import Header from "../components/common/Header"
 import { useEffect } from "react"

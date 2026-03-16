@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { storeService } from "../services/stores"
 import StoreForm from "./StoreForm"
 
 function EditStore() {
+    const navigate = useNavigate()
     const [store, setStore] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
@@ -18,13 +19,22 @@ function EditStore() {
             .catch((err) => {
                 console.error(err)
             })
-    }, []) 
+    }, [id]) 
+
+    useEffect(() => {
+    if (!id) {
+        navigate('/stores')
+        return
+    }
+    storeService.getById(id)
+    }, [id])
+
+
     return (
         <>
             {isLoaded ? (
                 <StoreForm
                     initialData={store}
-                    onSubmit={(formData) => storeService.update(id, formData)}
                     submitLabel="Edit Store"
                     isEditing={true}
                 />

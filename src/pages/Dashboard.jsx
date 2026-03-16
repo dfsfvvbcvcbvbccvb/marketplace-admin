@@ -3,7 +3,7 @@ import Sidebar from "../components/common/Sidebar"
 import { storeService } from "../services/stores"
 import { useEffect, useState } from "react"
 import { productService } from "../services/products"
-import userService from "../services/users"
+import { userService } from "../services/users"
 import { categoriesService } from "../services/categories"
 
 function Dashboard() {
@@ -17,27 +17,6 @@ function Dashboard() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        storeService.getAll()
-            .then((data) => {
-                setStores(data.data.data)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-        productService.getAll()
-            .then((data) => {
-                setProducts(data.data.data)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-        userService.getAll()
-            .then((data) => {
-                setUsers(data.data.data)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
         storeService.getAll().then(data => setStoresTotal(data.data.meta.total))
         productService.getAll().then(data => setProductsTotal(data.data.meta.total))
         userService.getAll().then(data => setUsersTotal(data.data.meta.total))
@@ -47,9 +26,9 @@ function Dashboard() {
 
     return (
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="p-3 border text-center mt-2" style={{minWidth: '73%'}}>
                 <div className="border">
                     <h2 className="border">Dashboard</h2>
