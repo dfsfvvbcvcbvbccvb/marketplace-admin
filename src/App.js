@@ -11,6 +11,8 @@ import CreateProductPage from './pages/CreateProductPage';
 import EditProduct from './pages/EditProduct';
 import CreateUserPage from './pages/CreateUserPage';
 import EditStore from './pages/EditStore';
+import CreateCategoryPage from './pages/CreateCategoryPage';
+import EditCategory from './pages/EditCategory';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth()
@@ -20,16 +22,19 @@ function AppRoutes() {
             <Route path="/login" element={<LoginPage/>}/>
             {isAuthenticated ? (
                 <>
-                    <Route path="/users" element={<UsersPage />} />
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/stores" element={<StoresPage />} />
+                     <Route path="/" element={<Dashboard />} />
                     <Route path="/products" element={<ProductsPage />} />
-                    <Route path="/stores/create" element={<CreateStorePage />} />
-                    <Route path="/categories" element={<CategoriesPage />} />
                     <Route path="/products/create" element={<CreateProductPage />} />
                     <Route path="/products/edit" element={<EditProduct />} />
-                    <Route path="/users/add" element={<CreateUserPage />} />
+                    <Route path="/stores" element={<StoresPage />} />
+                    <Route path="/stores/create" element={<CreateStorePage />} />
                     <Route path="/stores/edit" element={<EditStore />} />
+                    <Route path="/categories" element={<CategoriesPage />} />
+                    <Route path="/categories/add" element={<CreateCategoryPage />} />
+                    <Route path="/categories/edit" element={<EditCategory />} />
+                    <Route path="/users" element={<UsersPage />} />
+                    <Route path="/users/add" element={<CreateUserPage />} />
+                    
                     <Route path="*" element={<Navigate to="/" />} />
                 </>
             ) : null}

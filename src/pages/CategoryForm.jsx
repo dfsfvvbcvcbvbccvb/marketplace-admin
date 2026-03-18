@@ -7,11 +7,11 @@ import { categoriesService } from "../services/categories"
 import { useEffect } from "react"
 import { storeService } from "../services/stores"
 
-function CreateCategoryPage() {
+function CategoryForm({initialData, isEditing, submitLabel, id}) {
 
-        const [categoryName, setCategoryName] = useState('')
-        const [categoryDescription, setCategoryDescription] = useState('')
-        const [categorySlug, setCategorySlug] = useState('')
+        const [categoryName, setCategoryName] = useState(initialData?.name)
+        const [categoryDescription, setCategoryDescription] = useState(initialData?.description)
+        const [categorySlug, setCategorySlug] = useState(initialData?.slug)
         const [parentId, setParentId] = useState(null)
         const [error, setError] = useState('')
         const [stores, setStores] = useState([])
@@ -24,21 +24,38 @@ function CreateCategoryPage() {
                         .catch((err) => console.error(err))
         }, [])
 
+        console.log(initialData)
+
         
 
         async function handleFormSubmit(e) {
             e.preventDefault()
-            if (storeId === '') {setError('Выберите store')}
-            if (categoryName === '') {setError('Введите название')}
-            if (categoryDescription === '') {setError('Введите описание')}
-            if (categorySlug === '') {setError('Введите slug')}
+            if (!isEditing) {
+                if (storeId === '') {
+                setError('Выберите store')
+                return
+            }
+            }
+            if (categoryName === '') {
+                setError('Введите название')
+                return
+            }
+            if (categoryDescription === '') {
+                setError('Введите описание')
+                return
+            }
+            if (categorySlug === '') {
+                setError('Введите slug')
+                return
+            }
             const categoryData = {
                 store_id: storeId,
                 name: categoryName,
                 description: categoryDescription,
                 slug: categorySlug
             }
-            await categoriesService.create(categoryData)
+            if (!isEditing) {await categoriesService.create(categoryData)}
+            if (isEditing) {await categoriesService.update(id, categoryData)}
             navigate('/categories')
         }
 
@@ -51,6 +68,8 @@ function CreateCategoryPage() {
             <div className="border mt-2" style={{minWidth: '73%'}}>
             <div className="text-center border">
                 <h2 className="border-bottom p-2">Information</h2>
+                    <div>
+                        {!isEditing && (
                                 <select
                                     value={storeId}
                                     onChange={(e) => setStoreId(e.target.value)}
@@ -63,17 +82,19 @@ function CreateCategoryPage() {
                                         </option>
                                     ))}
                                 </select>
+                        )}
+                    </div>
                 <div>
-                <input onChange={(e) => {setCategoryName(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Name"></input>
+                <input onChange={(e) => {setCategoryName(e.target.value)}} value={initialData?.name} className={`form-control mr-sm-2 mt-2 `} placeholder="Name"></input>
                 </div>
                 <div>
-                <input onChange={(e) => {setCategoryDescription(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Description"></input>
+                <input onChange={(e) => {setCategoryDescription(e.target.value)}} value={initialData?.description} className={`form-control mr-sm-2 mt-2 `} placeholder="Description"></input>
                 </div>
                 <div>
-                <input onChange={(e) => {setCategorySlug(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Slug"></input>
+                <input onChange={(e) => {setCategorySlug(e.target.value)}} value={initialData?.slug} className={`form-control mr-sm-2 mt-2 `} placeholder="Slug"></input>
                 </div>
                 <div>
-                <button type="submit" className="btn btn-primary mb-2 btn-lg mt-2">Create category</button>
+                <button type="submit" className="btn btn-primary mb-2 btn-lg mt-2">{submitLabel}</button>
                 </div>
                 <ErrorAlert error={error}></ErrorAlert>
             </div>
@@ -84,4 +105,4 @@ function CreateCategoryPage() {
     )
 }
 
-export default CreateCategoryPage
+export default CategoryForm

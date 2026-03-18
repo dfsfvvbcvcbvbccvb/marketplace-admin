@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { categoriesService } from "../services/categories"
 import { useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function CategoriesPage() {
 
@@ -11,7 +12,9 @@ function CategoriesPage() {
     const [searchParams] = useSearchParams();
     const DEFAULT_PER_PAGE = 15
     const [pagesNumber, setPagesNumber] = useState('')
+    const [error, setError ] = useState('')
     const current = searchParams.get('page')
+    const navigate = useNavigate()
 
     useEffect(() => {
         const page = searchParams.get('page')
@@ -43,7 +46,20 @@ function CategoriesPage() {
         
     }, [searchParams])
 
-    function handleDelete() {
+    function handleNavigate(e) {
+        navigate('/categories/edit', { state: { id: e.target.value } });
+    }
+
+    async function handleDelete(e) {
+        if (!window.confirm('Вы уверены, что хотите удалить?')) return
+                const id = e.target.value
+                try {
+                    await categoriesService.delete(id)
+                    setCategories(categories.filter(category => Number(category.id) !== Number(id)))
+                } catch (err) {
+                    console.error(err)
+                    setError('Не удалось удалить категорию')
+                }
         return
     }
 
@@ -99,7 +115,7 @@ function CategoriesPage() {
                                 <p>{children.name}</p>
                             ))}
                             </td>
-                            <td><button className="btn btn-primary m-2">Edit</button>
+                            <td><button onClick={handleNavigate} value={category.id} className="btn btn-primary m-2">Edit</button>
                             <button value={category.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}
