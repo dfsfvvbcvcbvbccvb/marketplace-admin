@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
 import ErrorAlert from "../components/common/ErrorAlert"
@@ -26,8 +26,6 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
     const [imagePreview, setImagePreview] = useState(null)
     const [galleryImages, setGalleryImages] = useState([])
     const [galleryPreviews, setGalleryPreviews] = useState([])
-    const location = useLocation()
-    let id = location.state?.id
     const navigate = useNavigate()
 
         useEffect(() => {
@@ -130,7 +128,6 @@ function renderCategoryOptions(categories, depth = 0) {
 
     async function handleFormSubmit(e) {
         e.preventDefault()
-         console.log(categoryId)
         if (categoryId === '') {
             setError('Выберите категорию')
             return

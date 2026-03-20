@@ -2,19 +2,19 @@ import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
 import { useEffect, useState } from "react"
 import { storeService } from "../services/stores"
-import { Link } from "react-router-dom"
+import { Link, UNSAFE_WithErrorBoundaryProps, useNavigate, useSearchParams } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
-import { useNavigate } from "react-router-dom"
-import { useSearchParams } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 function StoresPage() {
     const [stores, setStores] = useState([])
     const [error, setError] = useState('')
     const DEFAULT_PER_PAGE = 15
     const [pagesNumber, setPagesNumber] = useState('')
-     const [searchParams] = useSearchParams();
-     const current = searchParams.get('page')
+    const [searchParams] = useSearchParams();
+    const current = searchParams.get('page')
     const navigate = useNavigate()
+    const { userId } = useAuth()
 
         useEffect(() => {
             const page = searchParams.get('page')
@@ -77,15 +77,11 @@ function StoresPage() {
         }
     }
 
-    function handleNavigate(e) {
-        navigate('/stores/edit', { state: { id: e.target.value } });
-    }
-
     return (
         <div>
-        <Header></Header>
-        <div className="d-flex">
-            <Sidebar></Sidebar>
+        <Header/>
+            <div className="d-flex">
+            <Sidebar/>
             <div className="p-3 border border mt-2" style={{minWidth: '73%'}}>
                 <h2 className="text-center">StoresPage</h2>
                 <div>
@@ -108,7 +104,7 @@ function StoresPage() {
                             <td>{store.name}</td>
                             <td>{store.description}</td>
                             <td>{store.userId}</td>
-                            <td><button onClick={handleNavigate} value={store.id} className="btn btn-primary m-2">Edit</button>
+                            <td><button className="btn btn-primary m-2" onClick={() => navigate('/stores/edit', { state: { id: store.id } })}>Edit</button>
                             <button value={store.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}

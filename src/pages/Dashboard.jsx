@@ -8,13 +8,10 @@ import { categoriesService } from "../services/categories"
 
 function Dashboard() {
 
-    const [stores, setStores] = useState([])
     const [storesTotal, setStoresTotal] = useState(0)
     const [productsTotal, setProductsTotal] = useState(0)
     const [usersTotal, setUsersTotal] = useState(0)
     const [categoriesTotal, setCategoriesTotal] = useState(0)
-    const [products, setProducts] = useState([])
-    const [users, setUsers] = useState([])
 
     useEffect(() => {
         storeService.getAll().then(data => setStoresTotal(data.data.meta.total))

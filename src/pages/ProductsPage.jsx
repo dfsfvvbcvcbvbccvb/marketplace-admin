@@ -100,14 +100,10 @@ function ProductsPage() {
             await productService.delete(id)
             setProducts(products.filter(product => Number(product.id) !== Number(id)))
         } catch (err) {
-            console.error(err)
-            
+            setError(err)
         }
     }
 
-    function handleNavigate(e) {
-        navigate('/products/edit', { state: { id: e.target.value } });
-    }
     return (
         <div>
         <Header/>
@@ -145,7 +141,7 @@ function ProductsPage() {
                             {mainImageGenerate(product)}
                             {galleryImagesGenerate(product)}
                             <td>{product.isActive ? '✅' : '❌'}</td>
-                            <td><button value={product.id} onClick={handleNavigate} className="btn btn-primary m-2">Edit</button>
+                            <td><button className="btn btn-primary m-2" onClick={() => navigate('/products/edit', { state: { id: product.id } })}>Edit</button>
                             <button value={product.id} onClick={handleProductDelete} className="btn btn-danger">Delete</button></td>
                            
                         </tr>

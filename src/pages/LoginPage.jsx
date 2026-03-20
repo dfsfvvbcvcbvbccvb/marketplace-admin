@@ -41,8 +41,8 @@ function LoginPage() {
                 return
             }
             try {
-                const token = await authService.login({email, password})
-                login(token)
+                const data = await authService.login({email, password})
+                login(data)
                 navigate('/')
             } catch(e) {
                 if (e.status === 422) {

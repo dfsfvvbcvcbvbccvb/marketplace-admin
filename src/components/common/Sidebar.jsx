@@ -2,9 +2,6 @@ import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
 
 function Sidebar() {
-    const location = useLocation();
-
-    const isActive = (path) => location.pathname === path;
 
     return (
         <div className="d-flex flex-column flex-shrink-0 bg-light mt-2 p-3 border" style={{width: '380px', minHeight: '100vh'}}>

@@ -1,10 +1,8 @@
 import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
-import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { categoriesService } from "../services/categories"
-import { useSearchParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { useSearchParams, useNavigate, Link } from "react-router-dom"
 
 function CategoriesPage() {
 
@@ -19,7 +17,6 @@ function CategoriesPage() {
     useEffect(() => {
         const page = searchParams.get('page')
         const perPage = searchParams.get('per_page')
-        console.log(page, perPage)
         if (page === null && perPage === null) {
             categoriesService.getAll()
             .then((data) => {
@@ -84,9 +81,9 @@ function CategoriesPage() {
 
     return (
         <div>
-        <Header></Header>
+        <Header/>
         <div className="d-flex">
-            <Sidebar></Sidebar>
+            <Sidebar/>
             <div className="border mt-2" style={{minWidth: '73%'}}>
                 <div className="text-center align-center">
                     <h2 className="border">Categories</h2>
@@ -112,7 +109,7 @@ function CategoriesPage() {
                             <td>{category.store_id}</td>
                             <td>
                             {category.children.map((children) => (
-                                <p>{children.name}</p>
+                                <p key={children.id}>{children.name}</p>
                             ))}
                             </td>
                             <td><button onClick={handleNavigate} value={category.id} className="btn btn-primary m-2">Edit</button>

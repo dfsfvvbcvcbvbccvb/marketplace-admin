@@ -2,11 +2,11 @@ import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
 import { Link } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { storeService } from "../services/stores"
 
-function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
+function StoreForm({ initialData, submitLabel, isEditing }) {
     const navigate = useNavigate()
     const [error, setError] = useState('')
     const [storeName, setStoreName] = useState(initialData?.name)
@@ -33,9 +33,8 @@ function StoreForm({ initialData, onSubmit, submitLabel, isEditing }) {
                 setError('Произошла ошибка при создании магазина')
             }
             }
-            }
-            if (isEditing) {
-            try {
+            } else {
+              try {
                 await storeService.update(initialData.id, storeData)
                 navigate('/stores')
             } catch(e) {

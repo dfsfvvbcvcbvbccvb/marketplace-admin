@@ -1,87 +1,11 @@
-import Header from "../components/common/Header"
-import Sidebar from "../components/common/Sidebar"
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import ErrorAlert from "../components/common/ErrorAlert"
-import { categoriesService } from "../services/categories"
-import { useEffect } from "react"
-import { storeService } from "../services/stores"
-
+import CategoryForm from "./CategoryForm"
 function CreateCategoryPage() {
 
-        const [categoryName, setCategoryName] = useState('')
-        const [categoryDescription, setCategoryDescription] = useState('')
-        const [categorySlug, setCategorySlug] = useState('')
-        const [parentId, setParentId] = useState(null)
-        const [error, setError] = useState('')
-        const [stores, setStores] = useState([])
-        const [storeId, setStoreId] = useState('')
-        const navigate = useNavigate()
-
-        useEffect(() => {
-                    storeService.getAll()
-                        .then((data) => setStores(data.data.data))
-                        .catch((err) => console.error(err))
-        }, [])
-
-        
-
-        async function handleFormSubmit(e) {
-            e.preventDefault()
-            if (storeId === '') {setError('Выберите store')}
-            if (categoryName === '') {setError('Введите название')}
-            if (categoryDescription === '') {setError('Введите описание')}
-            if (categorySlug === '') {setError('Введите slug')}
-            const categoryData = {
-                store_id: storeId,
-                name: categoryName,
-                description: categoryDescription,
-                slug: categorySlug
-            }
-            await categoriesService.create(categoryData)
-            navigate('/categories')
-        }
-
-        return (
-        <form onSubmit={handleFormSubmit}>
-        <div>
-        <Header/>
-        <div className="d-flex">
-            <Sidebar/>
-            <div className="border mt-2" style={{minWidth: '73%'}}>
-            <div className="text-center border">
-                <h2 className="border-bottom p-2">Information</h2>
-                                <select
-                                    value={storeId}
-                                    onChange={(e) => setStoreId(e.target.value)}
-                                    className="form-select"
-                                >
-                                    <option value="">Select store</option>
-                                    {stores.map((store) => (
-                                        <option key={store.id} value={store.id}>
-                                            {store.name}
-                                        </option>
-                                    ))}
-                                </select>
-                <div>
-                <input onChange={(e) => {setCategoryName(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Name"></input>
-                </div>
-                <div>
-                <input onChange={(e) => {setCategoryDescription(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Description"></input>
-                </div>
-                <div>
-                <input onChange={(e) => {setCategorySlug(e.target.value)}} className={`form-control mr-sm-2 mt-2 `} placeholder="Slug"></input>
-                </div>
-                <div>
-                <button type="submit" className="btn btn-primary mb-2 btn-lg mt-2">Create category</button>
-                </div>
-                <ErrorAlert error={error}></ErrorAlert>
-            </div>
-            </div>
-        </div>
-        </div>
-        </form>
+    return (
+        <CategoryForm
+            submitLabel='Create category'
+            isEditing={false}
+        />
     )
 }
-
 export default CreateCategoryPage

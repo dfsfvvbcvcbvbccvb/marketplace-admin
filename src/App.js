@@ -13,6 +13,7 @@ import CreateUserPage from './pages/CreateUserPage';
 import EditStore from './pages/EditStore';
 import CreateCategoryPage from './pages/CreateCategoryPage';
 import EditCategory from './pages/EditCategory';
+import EditUser from './pages/EditUser';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth()
@@ -33,6 +34,7 @@ function AppRoutes() {
                     <Route path="/categories/add" element={<CreateCategoryPage />} />
                     <Route path="/categories/edit" element={<EditCategory />} />
                     <Route path="/users" element={<UsersPage />} />
+                    <Route path="/users/edit" element={<EditUser />} />
                     <Route path="/users/add" element={<CreateUserPage />} />
                     
                     <Route path="*" element={<Navigate to="/" />} />

@@ -8,22 +8,32 @@ export function AuthProvider({ children }) {
         !!localStorage.getItem('token')
     )
 
-    const login = (token) => {
-        localStorage.setItem('token', token)
+    const [userId, setUserId] = useState(localStorage.getItem('user_id'))
+
+    const login = (data) => {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user_id', data.user_id)
+
+        setUserId(data.user_id)
         setIsAuthenticated(true)
     }
+
+    
 
     const logout = async () => {
     try {
         await api.post('/logout')
     } finally {
         localStorage.removeItem('token')
+        localStorage.removeItem('user_id')
+
         setIsAuthenticated(false)
+        setUserId(undefined)
     }
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, userId, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

@@ -4,10 +4,10 @@ export const categoriesService = {
   // Получить все категории
   getAll: (params) => {
     if (params?.storeId) {
-      return api.get(`/categories?store_id=${params?.storeId}`);
+      return api.get('/categories', { params: { store_id: params.storeId } })
     } 
     if (params?.page && params?.per_page) {
-      return api.get(`/categories?page=${params.page}&per_page=${params.per_page}`);
+      return api.get('/categories', { params })
     } else {
       return api.get(`/categories`);
     }
