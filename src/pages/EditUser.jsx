@@ -31,6 +31,7 @@ function EditUser() {
                     initialData={user}
                     submitLabel="Edit User"
                     isEditing={true}
+                    id={id}
                 />
             ) : (
                 <p>Загрузка</p>

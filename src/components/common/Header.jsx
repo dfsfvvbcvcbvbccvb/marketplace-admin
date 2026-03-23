@@ -6,8 +6,9 @@ import logo from './logo.jpg'
 function Header() {
     const { logout } = useAuth();
     const [username, setUsername] = useState()
+    const { userId } = useAuth()
             useEffect(() => {
-                userService.getById(localStorage.getItem('user_id'))
+                userService.getById(userId)
                     .then((data) => setUsername(data.data.data.name))
                     .catch((err) => console.error(err))
             }, [])

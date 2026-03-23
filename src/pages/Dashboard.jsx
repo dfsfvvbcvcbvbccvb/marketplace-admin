@@ -31,12 +31,12 @@ function Dashboard() {
                     <h2 className="border">Dashboard</h2>
                     <div className="align-center">
                     <div className="d-flex">
-                        <div style={{width: '300px'}} className="border m-3"><h3>Stores</h3><span>{storesTotal}</span></div>
-                        <div style={{width: '300px'}} className="border m-3"><h3>Products</h3><span>{productsTotal}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Stores</h3><span>{storesTotal.toLocaleString('ru')}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Products</h3><span>{productsTotal.toLocaleString('ru')}</span></div>
                     </div>
                     <div className="d-flex">
-                        <div style={{width: '300px'}} className="border m-3"><h3>Categories</h3><span>{categoriesTotal}</span></div>
-                        <div style={{width: '300px'}} className="border m-3"><h3>Users</h3><span>{usersTotal}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Categories</h3><span>{categoriesTotal.toLocaleString('ru')}</span></div>
+                        <div style={{width: '300px'}} className="border m-3"><h3>Users</h3><span>{usersTotal.toLocaleString('ru')}</span></div>
                     </div>
                     </div>
                 </div>

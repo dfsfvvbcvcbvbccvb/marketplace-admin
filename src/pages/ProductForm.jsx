@@ -46,7 +46,7 @@ function ProductForm({ initialData, onSubmit, submitLabel, isEditing }) {
                 }
         
         
-            categoriesService.getAll(storeId)
+            categoriesService.getAll({ storeId })
                     .then((data) => {
                         setCategories(Object.values(data.data.data))
                         if (!isEditing) {

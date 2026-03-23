@@ -1,49 +1,20 @@
 import Header from "../components/common/Header"
 import { productService } from "../services/products"
 import Sidebar from "../components/common/Sidebar"
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Link } from 'react-router-dom'
 import ErrorAlert from "../components/common/ErrorAlert"
 import { useSearchParams } from 'react-router-dom';
+import { pagesGenerate } from "../utils/pagination"
+import usePaginatedData from "../hooks/usePaginatedHooks"
 
 function ProductsPage() {
     const navigate = useNavigate()
-    const [products, setProducts] = useState([])
-    const [error, setError] = useState('')
     const DEFAULT_PER_PAGE = 15
-    const [pagesNumber, setPagesNumber] = useState('')
      const [searchParams] = useSearchParams();
      const current = searchParams.get('page')
-    useEffect(() => {
-        const page = searchParams.get('page')
-        const perPage = searchParams.get('per_page')
-        if (page === null && perPage === null) {
-            productService.getAll()
-            .then((data) => {
-                setProducts(data.data.data)
-                setPagesNumber(Math.ceil(data?.data?.meta?.total / DEFAULT_PER_PAGE))
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-            
-        } else {
-        productService.getAll({
-            page: page,
-            per_page: perPage
-        })
-            .then((data) => {
-                setProducts(data.data.data)
-                setPagesNumber(Math.ceil(data.data.meta.total / perPage))
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-        }
-        
 
-    }, [searchParams])
+     const { data: products, setData: setProducts, pagesNumber, error, setError } = usePaginatedData(productService, 15)
     function galleryImagesGenerate(product) {
         if (!product.galleryImageUrls?.length) {
             return <td>Отсутствует</td>
@@ -59,25 +30,6 @@ function ProductsPage() {
         )
     }
 
-    function pagesGenerate() {
-        const total = pagesNumber
-        const delta = 2
-        const currentPage = Number(current) || 1
-        const range = []
-
-        for (let i = Math.max(2, currentPage - delta); i <= Math.min(total - 1, currentPage + delta); i++) {
-            range.push(i)
-        }
-
-        if (range[0] > 2) range.unshift('...')
-        if (range[range.length - 1] < total - 1) range.push('...')
-
-        range.unshift(1)
-        if (total > 1) range.push(total)
-        return range
-        
-    }
-    
     function mainImageGenerate(product) {
         const url = product.mainImageUrl
         if (!product.mainImageUrl) {
@@ -135,7 +87,7 @@ function ProductsPage() {
                         <tr key={product.id}>
                             <td>{product.id}</td>
                             <td>{product.name}</td>
-                            <td>{product.price}</td>
+                            <td>{product.price.toLocaleString('ru')}</td>
                             <td>{product.stockQuantity}</td>
                             <td>{product.store.name}</td>
                             {mainImageGenerate(product)}
@@ -156,7 +108,7 @@ function ProductsPage() {
         : <Link
             key={page}
             to={`/products?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
-            className={`btn ${Number(page) === Number(current) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+            className={`btn ${Number(current || 1) === Number(page) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
           >
             {page}
           </Link>

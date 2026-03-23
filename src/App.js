@@ -31,11 +31,11 @@ function AppRoutes() {
                     <Route path="/stores/create" element={<CreateStorePage />} />
                     <Route path="/stores/edit" element={<EditStore />} />
                     <Route path="/categories" element={<CategoriesPage />} />
-                    <Route path="/categories/add" element={<CreateCategoryPage />} />
+                    <Route path="/categories/create" element={<CreateCategoryPage />} />
                     <Route path="/categories/edit" element={<EditCategory />} />
                     <Route path="/users" element={<UsersPage />} />
                     <Route path="/users/edit" element={<EditUser />} />
-                    <Route path="/users/add" element={<CreateUserPage />} />
+                    <Route path="/users/create" element={<CreateUserPage />} />
                     
                     <Route path="*" element={<Navigate to="/" />} />
                 </>

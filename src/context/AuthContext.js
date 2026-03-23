@@ -18,8 +18,6 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true)
     }
 
-    
-
     const logout = async () => {
     try {
         await api.post('/logout')

@@ -1,47 +1,18 @@
 import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
-import { useState, useEffect } from "react"
 import { categoriesService } from "../services/categories"
 import { useSearchParams, useNavigate, Link } from "react-router-dom"
+import { pagesGenerate } from "../utils/pagination"
+import usePaginatedData from "../hooks/usePaginatedHooks"
+import ErrorAlert from "../components/common/ErrorAlert"
 
 function CategoriesPage() {
 
-    const [categories, setCategories] = useState([])
     const [searchParams] = useSearchParams();
     const DEFAULT_PER_PAGE = 15
-    const [pagesNumber, setPagesNumber] = useState('')
-    const [error, setError ] = useState('')
     const current = searchParams.get('page')
     const navigate = useNavigate()
-
-    useEffect(() => {
-        const page = searchParams.get('page')
-        const perPage = searchParams.get('per_page')
-        if (page === null && perPage === null) {
-            categoriesService.getAll()
-            .then((data) => {
-                setCategories(data.data.data)
-                setPagesNumber(Math.ceil(data?.data?.meta?.total / DEFAULT_PER_PAGE))
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-            
-        } else {
-        categoriesService.getAll({
-            page: page,
-            per_page: perPage
-        })
-            .then((data) => {
-                setCategories(data.data.data)
-                setPagesNumber(Math.ceil(data.data.meta.total / perPage))
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-        }
-        
-    }, [searchParams])
+    const { data: categories, setData: setCategories, pagesNumber, error, setError } = usePaginatedData(categoriesService, 15)
 
     function handleNavigate(e) {
         navigate('/categories/edit', { state: { id: e.target.value } });
@@ -60,25 +31,6 @@ function CategoriesPage() {
         return
     }
 
-    function pagesGenerate() {
-        const total = pagesNumber
-        const delta = 2
-        const currentPage = Number(current) || 1
-        const range = []
-
-        for (let i = Math.max(2, currentPage - delta); i <= Math.min(total - 1, currentPage + delta); i++) {
-            range.push(i)
-        }
-
-        if (range[0] > 2) range.unshift('...')
-        if (range[range.length - 1] < total - 1) range.push('...')
-
-        range.unshift(1)
-        if (total > 1) range.push(total)
-        return range
-        
-    }
-
     return (
         <div>
         <Header/>
@@ -89,7 +41,7 @@ function CategoriesPage() {
                     <h2 className="border">Categories</h2>
                 </div>
                 <div className="m-2">
-                <Link to="/categories/add">+ Add New Category</Link>
+                <Link to="/categories/create">+ Add New Category</Link>
                 </div>
                                 <table className="table">
                 <thead>
@@ -118,6 +70,7 @@ function CategoriesPage() {
                     ))}
                 </tbody>
             </table>
+            <ErrorAlert error={error}></ErrorAlert>
                         <div className="m-2">
                 {pagesGenerate(current, pagesNumber).map((page, i) =>
     page === '...'
@@ -125,7 +78,7 @@ function CategoriesPage() {
         : <Link
             key={page}
             to={`/categories?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
-            className={`btn ${Number(page) === Number(current) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+            className={`btn ${Number(current || 1) === Number(page) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
           >
             {page}
           </Link>

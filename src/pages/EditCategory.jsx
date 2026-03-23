@@ -11,25 +11,15 @@ function EditCategory() {
     const id = location.state?.id
 
     useEffect(() => {
+        if (!id) {
+            navigate('/categories')
+            return
+        }
         categoriesService.getById(id)
-            .then((data) => {
-                setCategory(data.data.data)
-                setIsLoaded(true)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-    }, [id]) 
-
-    useEffect(() => {
-    if (!id) {
-        navigate('/categories')
-        return
-    }
-    categoriesService.getById(id)
+            .then((data) => { setCategory(data.data.data); setIsLoaded(true) })
+            .catch((err) => console.error(err))
     }, [id])
 
-    console.log(category)
     return (
         <>
             {isLoaded ? (

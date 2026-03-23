@@ -1,69 +1,17 @@
 import Header from "../components/common/Header"
 import Sidebar from "../components/common/Sidebar"
-import { useEffect, useState } from "react"
 import { storeService } from "../services/stores"
-import { Link, UNSAFE_WithErrorBoundaryProps, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
-import { useAuth } from "../context/AuthContext"
+import { pagesGenerate } from "../utils/pagination"
+import usePaginatedData from "../hooks/usePaginatedHooks"
 
 function StoresPage() {
-    const [stores, setStores] = useState([])
-    const [error, setError] = useState('')
     const DEFAULT_PER_PAGE = 15
-    const [pagesNumber, setPagesNumber] = useState('')
     const [searchParams] = useSearchParams();
     const current = searchParams.get('page')
     const navigate = useNavigate()
-    const { userId } = useAuth()
-
-        useEffect(() => {
-            const page = searchParams.get('page')
-            const perPage = searchParams.get('per_page')
-            if (page === null && perPage === null) {
-                storeService.getAll()
-                .then((data) => {
-                    setStores(data.data.data)
-                    setPagesNumber(Math.ceil(data?.data?.meta?.total / DEFAULT_PER_PAGE))
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-                
-            } else {
-            storeService.getAll({
-                page: page,
-                per_page: perPage
-            })
-                .then((data) => {
-                    setStores(data.data.data)
-                    setPagesNumber(Math.ceil(data.data.meta.total / perPage))
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-            }
-            
-    
-        }, [searchParams])
-
-    function pagesGenerate() {
-        const total = pagesNumber
-        const delta = 2
-        const currentPage = Number(current) || 1
-        const range = []
-
-        for (let i = Math.max(2, currentPage - delta); i <= Math.min(total - 1, currentPage + delta); i++) {
-            range.push(i)
-        }
-
-        if (range[0] > 2) range.unshift('...')
-        if (range[range.length - 1] < total - 1) range.push('...')
-
-        range.unshift(1)
-        if (total > 1) range.push(total)
-        return range
-        
-    }
+    const { data: stores, setData: setStores, pagesNumber, error, setError } = usePaginatedData(storeService, 15)
 
     async function handleDelete(e) {
         if (!window.confirm('Вы уверены, что хотите удалить?')) return
@@ -118,7 +66,7 @@ function StoresPage() {
         : <Link
             key={page}
             to={`/stores?page=${page}&per_page=${DEFAULT_PER_PAGE}`}
-            className={`btn ${Number(page) === Number(current) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
+            className={`btn ${Number(current || 1) === Number(page) ? 'btn-secondary' : 'btn-outline-primary'} me-1`}
           >
             {page}
           </Link>

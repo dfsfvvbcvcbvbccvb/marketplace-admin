@@ -46,15 +46,14 @@ function LoginPage() {
                 navigate('/')
             } catch(e) {
                 if (e.status === 422) {
-                    if (e.response.data.password) {
+                    if (e.response?.data?.password) {
                         setPasswordError(e.response.data.password)
                     }
-                    if (e.response.data.email) {
+                    if (e.response?.data?.email) {
                         setEmailError(e.response.data.email)
                     }
                     
-                } else if 
-                (e.status === 401) {
+                } else if (e.status === 401) {
                     setError('Неверный логин или пароль!')
                 } else {
                     setError('Неизвестная ошибка!')

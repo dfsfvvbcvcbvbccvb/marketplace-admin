@@ -1,15 +1,20 @@
 import ProductForm from "./ProductForm"
 import { useEffect, useState } from "react"
 import productService from "../services/products"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 function EditProduct() {
     const [product, setProduct] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
     const id = location.state?.id
 
     useEffect(() => {
+        if (!id) {
+            navigate('/products')
+            return
+        }
         productService.getById(id)
             .then((data) => {
                 setProduct(data.data.data)
@@ -18,7 +23,7 @@ function EditProduct() {
             .catch((err) => {
                 console.error(err)
             })
-    }, []) 
+    }, [id])
     return (
         <>
             {isLoaded ? (
