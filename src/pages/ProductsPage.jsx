@@ -7,10 +7,10 @@ import ErrorAlert from "../components/common/ErrorAlert"
 import { useSearchParams } from 'react-router-dom';
 import { pagesGenerate } from "../utils/pagination"
 import usePaginatedData from "../hooks/usePaginatedHooks"
+import { DEFAULT_PER_PAGE } from "../utils/constants"
 
 function ProductsPage() {
     const navigate = useNavigate()
-    const DEFAULT_PER_PAGE = 15
      const [searchParams] = useSearchParams();
      const current = searchParams.get('page')
 
@@ -93,7 +93,7 @@ function ProductsPage() {
                             {mainImageGenerate(product)}
                             {galleryImagesGenerate(product)}
                             <td>{product.isActive ? '✅' : '❌'}</td>
-                            <td><button className="btn btn-primary m-2" onClick={() => navigate('/products/edit', { state: { id: product.id } })}>Edit</button>
+                            <td><button className="btn btn-primary m-2" onClick={() => navigate(`/products/${product.id}/edit`)}>Edit</button>
                             <button value={product.id} onClick={handleProductDelete} className="btn btn-danger">Delete</button></td>
                            
                         </tr>

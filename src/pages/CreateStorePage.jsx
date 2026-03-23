@@ -1,4 +1,4 @@
-import StoreForm from "./StoreForm"
+import StoreForm from "../components/StoreForm"
 
 function CreateStorePage() {
     return (

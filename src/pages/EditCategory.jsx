@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { categoriesService } from "../services/categories"
-import CategoryForm from "./CategoryForm"
+import CategoryForm from "../components/CategoryForm"
 
 function EditCategory() {
     const navigate = useNavigate()
     const [category, setCategory] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
-    const id = location.state?.id
+    const { id } = useParams()
 
     useEffect(() => {
         if (!id) {

@@ -7,11 +7,11 @@ function Header() {
     const { logout } = useAuth();
     const [username, setUsername] = useState()
     const { userId } = useAuth()
-            useEffect(() => {
-                userService.getById(userId)
-                    .then((data) => setUsername(data.data.data.name))
-                    .catch((err) => console.error(err))
-            }, [])
+     useEffect(() => {
+            userService.getById(userId)
+                .then((data) => setUsername(data.data.data.name))
+                .catch((err) => console.error(err))
+     }, [])
 
     return (
         <nav className="navbar navbar-light bg-light border">

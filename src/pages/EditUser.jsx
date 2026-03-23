@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { userService } from "../services/users"
-import UserForm from "./UserForm"
+import UserForm from "../components/UserForm"
+import ErrorAlert from "../components/common/ErrorAlert"
 
 function EditUser() {
     const navigate = useNavigate()
     const [user, setUser] = useState(null)
+    const [error, setError] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
-    const id = location.state?.id
+    const { id } = useParams()
 
     useEffect(() => {
         if (!id) {
@@ -20,7 +22,7 @@ function EditUser() {
                 setUser(data.data.data)
                 setIsLoaded(true)
             })
-            .catch((err) => console.error(err))
+            .catch((err) => { setError('Не удалось загрузить данные пользователя') })
     }, [id])
 
 
@@ -34,7 +36,10 @@ function EditUser() {
                     id={id}
                 />
             ) : (
+                <div>
                 <p>Загрузка</p>
+                <ErrorAlert error={error}></ErrorAlert>
+                </div>
             )}
         </>
     )

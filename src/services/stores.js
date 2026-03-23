@@ -7,7 +7,7 @@ export const storeService = {
       return api.get(`/stores?store_id=${params?.storeId}`);
     } 
     if (params?.page && params?.per_page) {
-      return api.get(`/stores?page=${params.page}&per_page=${params.per_page}`);
+      return api.get(`/stores`, { params });
     } else {
       return api.get(`/stores`);
     }

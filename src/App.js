@@ -26,15 +26,15 @@ function AppRoutes() {
                      <Route path="/" element={<Dashboard />} />
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/products/create" element={<CreateProductPage />} />
-                    <Route path="/products/edit" element={<EditProduct />} />
+                    <Route path="/products/:id/edit" element={<EditProduct />} />
                     <Route path="/stores" element={<StoresPage />} />
                     <Route path="/stores/create" element={<CreateStorePage />} />
-                    <Route path="/stores/edit" element={<EditStore />} />
+                    <Route path="/stores/:id/edit" element={<EditStore />} />
                     <Route path="/categories" element={<CategoriesPage />} />
                     <Route path="/categories/create" element={<CreateCategoryPage />} />
-                    <Route path="/categories/edit" element={<EditCategory />} />
+                    <Route path="/categories/:id/edit" element={<EditCategory />} />
                     <Route path="/users" element={<UsersPage />} />
-                    <Route path="/users/edit" element={<EditUser />} />
+                    <Route path="/users/:id/edit" element={<EditUser />} />
                     <Route path="/users/create" element={<CreateUserPage />} />
                     
                     <Route path="*" element={<Navigate to="/" />} />

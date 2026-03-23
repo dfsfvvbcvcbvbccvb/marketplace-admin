@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { storeService } from "../services/stores"
-import StoreForm from "./StoreForm"
+import StoreForm from "../components/StoreForm"
 
 function EditStore() {
     const navigate = useNavigate()
     const [store, setStore] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
-    const id = location.state?.id
+    const { id } = useParams()
 
     useEffect(() => {
         if (!id) {

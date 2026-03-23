@@ -1,14 +1,14 @@
-import ProductForm from "./ProductForm"
+import ProductForm from "../components/ProductForm"
 import { useEffect, useState } from "react"
 import productService from "../services/products"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 function EditProduct() {
     const [product, setProduct] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
-    const id = location.state?.id
+    const { id } = useParams()
 
     useEffect(() => {
         if (!id) {

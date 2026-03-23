@@ -7,7 +7,7 @@ export const userService = {
       return api.get(`/users?store_id=${params?.storeId}`);
     } 
     if (params?.page && params?.per_page) {
-      return api.get(`/users?page=${params.page}&per_page=${params.per_page}`);
+      return api.get(`/users`, { params });
     } else {
       return api.get(`/users`);
     }

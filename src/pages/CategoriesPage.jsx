@@ -5,17 +5,17 @@ import { useSearchParams, useNavigate, Link } from "react-router-dom"
 import { pagesGenerate } from "../utils/pagination"
 import usePaginatedData from "../hooks/usePaginatedHooks"
 import ErrorAlert from "../components/common/ErrorAlert"
+import { DEFAULT_PER_PAGE } from "../utils/constants"
 
 function CategoriesPage() {
 
     const [searchParams] = useSearchParams();
-    const DEFAULT_PER_PAGE = 15
     const current = searchParams.get('page')
     const navigate = useNavigate()
     const { data: categories, setData: setCategories, pagesNumber, error, setError } = usePaginatedData(categoriesService, 15)
 
     function handleNavigate(e) {
-        navigate('/categories/edit', { state: { id: e.target.value } });
+        navigate(`/categories/${e.target.value}/edit`);
     }
 
     async function handleDelete(e) {

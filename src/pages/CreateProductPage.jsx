@@ -1,4 +1,4 @@
-import ProductForm from "./ProductForm"
+import ProductForm from "../components/ProductForm"
 import productService from "../services/products"
 
 function CreateProductPage() {

@@ -1,4 +1,4 @@
-import CategoryForm from "./CategoryForm"
+import CategoryForm from "../components/CategoryForm"
 function CreateCategoryPage() {
 
     return (

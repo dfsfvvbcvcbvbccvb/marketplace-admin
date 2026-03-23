@@ -5,10 +5,10 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import ErrorAlert from "../components/common/ErrorAlert"
 import { pagesGenerate } from "../utils/pagination"
 import usePaginatedData from "../hooks/usePaginatedHooks"
+import { DEFAULT_PER_PAGE } from "../utils/constants"
 
 function UsersPage() {
 
-    const DEFAULT_PER_PAGE = 15
     const [searchParams] = useSearchParams();
     const current = searchParams.get('page')
     const navigate = useNavigate()
@@ -50,7 +50,7 @@ function UsersPage() {
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
-                            <td><button value={user.id} className="btn btn-primary m-2" onClick={() => navigate('/users/edit', { state: { id: user.id } })}>Edit</button>
+                            <td><button value={user.id} className="btn btn-primary m-2" onClick={() => navigate(`/users/${user.id}/edit`)}>Edit</button>
                             <button value={user.id} onClick={handleDelete} className="btn btn-danger">Delete</button></td>
                         </tr>
                     ))}
